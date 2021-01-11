@@ -75,9 +75,9 @@ final float infancyLength = 20;
 final float growthSpeed = 0.5;
 final float energyPerRay = 20; // was: 1 
 final float sunlightPer10kPixels = 1; // was: 20 
-final float energyCostPerFrame = 0.003; 
-final float costPerBodySize = 0.01; 
-final float costPerTrunkSize = 0.01; 
+final float energyCostPerFrame = 0.006; //was: .003
+final float costPerBodySize = 0.005; //was: .01
+final float costPerTrunkSize = 0.005; //was: .01
 final float seedDispersalCost = 0; 
 
 // === Restrictions === //

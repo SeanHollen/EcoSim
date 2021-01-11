@@ -4,18 +4,18 @@ class Plant extends Organism {
   public float trunk; 
   public float canopy; 
   
-  public Plant(ArrayList<Action> actions, Location location, float energy) {
-    this(actions, location, energy, 2, 0); 
+  public Plant(Genome genome, Location location, float energy) {
+    this(genome, location, energy, 2, 0); 
   }
   
-  public Plant(ArrayList<Action> actions, Location location, float energy, float trunk, float canopy) {
-    super(actions, location, energy);
+  public Plant(Genome genome, Location location, float energy, float trunk, float canopy) {
+    super(genome, location, energy);
     this.trunk = trunk;
     this.canopy = canopy; 
   }
   
-  protected Organism child(ArrayList<Action> actions, Location newLoc, float startingEnergy) {
-     return new Plant(actions, newLoc, startingEnergy);
+  protected Organism child(Genome genome, Location newLoc, float startingEnergy) {
+     return new Plant(genome, newLoc, startingEnergy);
   }
   
   public void obsorbSunlight() {

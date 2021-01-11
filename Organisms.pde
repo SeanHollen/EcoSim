@@ -12,7 +12,7 @@ void addStartingPlants(int numToMake) {
   actions.add(new Reproduce(40, 100, 500)); 
   for (int i = 0; i < numToMake; i++) {
     Location newLocation = new Location(random(boardX), random(boardY));
-    Plant newPlant = new Plant(actions, newLocation, plantStartingEnergy);
+    Plant newPlant = new Plant(new Genome(actions), newLocation, plantStartingEnergy);
     organisms.add(newPlant);
   }
 }
@@ -26,7 +26,7 @@ void addStartingHerbavores(int numToMake) {
   actions.add(new Reproduce(40, 0, 500)); 
   for (int i = 0; i < numToMake; i++) {
     Location newLocation = new Location(random(boardX), random(boardY));
-    Animal newAnimal = new Animal(actions, newLocation, startingBodySize, startingBodySize);
+    Animal newAnimal = new Animal(new Genome(actions), newLocation, startingBodySize, startingBodySize);
     newAnimal.grazing = startingGraze; 
     organisms.add(newAnimal);
   }
@@ -41,7 +41,7 @@ void addStartingCarnivores(int numToMake) {
   actions.add(new Reproduce(20, 100, 500)); 
   for (int i = 0; i < numToMake; i++) {
     Location newLocation = new Location(random(boardX), random(boardY));
-    Animal newAnimal = new Animal(actions, newLocation, startingBodySize, startingBodySize);
+    Animal newAnimal = new Animal(new Genome(actions), newLocation, startingBodySize, startingBodySize);
     newAnimal.jaws = startingJaws; 
     organisms.add(newAnimal);
   }

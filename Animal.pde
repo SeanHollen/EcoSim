@@ -5,17 +5,17 @@ class Animal extends Organism {
   public float grazing, jaws, legs, fins, climbing, burrowing, fur, longNeck; 
   private HashMap<Integer, Integer> otherOrganismsConsumedTimes;
   
-  public Animal(ArrayList<Action> actions, Location location, float energy) {
-    this(actions, location, energy, 2, 0, 0, 0, 0, 0, 0, 0, 0); 
+  public Animal(Genome genome, Location location, float energy) {
+    this(genome, location, energy, 2, 0, 0, 0, 0, 0, 0, 0, 0); 
   }
   
-  public Animal(ArrayList<Action> actions, Location location, float energy, float bodySize) {
-    this(actions, location, energy, bodySize, 0, 0, 0, 0, 0, 0, 0, 0); 
+  public Animal(Genome genome, Location location, float energy, float bodySize) {
+    this(genome, location, energy, bodySize, 0, 0, 0, 0, 0, 0, 0, 0); 
   }
   
-  private Animal(ArrayList<Action> actions, Location location, float energy, float bodySize, float grazing, 
+  private Animal(Genome genome, Location location, float energy, float bodySize, float grazing, 
   float jaws, float legs, float fins, float climbing, float burrowing, float fur, float longNeck) {
-    super(actions, location, energy);
+    super(genome, location, energy);
     this.bodySize = bodySize; 
     this.grazing = grazing; 
     this.jaws = jaws; 
@@ -28,8 +28,8 @@ class Animal extends Organism {
     otherOrganismsConsumedTimes = new HashMap<Integer, Integer>(); 
   }
   
-  protected Organism child(ArrayList<Action> actions, Location loc, float startingEnergy) {
-    return new Animal(actions, loc, startingEnergy);
+  protected Organism child(Genome genome, Location loc, float startingEnergy) {
+    return new Animal(genome, loc, startingEnergy);
   }
   
   public void move() {

@@ -9,19 +9,17 @@ abstract class Organism implements Comparable<Organism> {
   private float energy; 
   public float shell, spikes; 
   
-  private ArrayList<Action> lifeEvents; 
-  private int eventsIndex; 
+  private Genome genome; 
   
-  public Organism(ArrayList<Action> actions, Location location, float energy) {
+  public Organism(Genome genome, Location location, float energy) {
     this.location = location; 
     this.energy = energy; 
+    this.genome = genome;
     setRandomOrientation(); 
     age = 1; 
     shell = 0; 
     spikes = 0; 
     ID = OrganismIDMaker.getID(); 
-    lifeEvents = actions;
-    eventsIndex = 0; 
   }
   
   public Organism birth(float energyRequired, float seedDispersal) {
@@ -30,10 +28,10 @@ abstract class Organism implements Comparable<Organism> {
     }
     Location newLoc = this.location.getLocOffBy(seedDispersal, random(2 * PI));
     this.energy -= energyRequired; 
-    return child(this.lifeEvents, newLoc, energyRequired);
+    return child(this.genome, newLoc, energyRequired);
   }
   
-  protected abstract Organism child(ArrayList<Action> actions ,Location newLoc, float startingEnergy); 
+  protected abstract Organism child(Genome genome, Location newLoc, float startingEnergy); 
     
   public boolean inIntersectingXRange(Organism other) {
     float ourRightMostXPoint = this.location.getX() + (width() / 2);
@@ -78,13 +76,6 @@ abstract class Organism implements Comparable<Organism> {
   public boolean olderThan(int age) {
     return this.age > age; 
   }
-  
-  protected Action getNextAction() {
-    if (eventsIndex >= lifeEvents.size()) {
-      eventsIndex %= lifeEvents.size(); 
-    } 
-    return lifeEvents.get(eventsIndex++);
-  }
     
   public void homeostasis(float toDrain) {
     this.energy -= toDrain; 
@@ -94,11 +85,11 @@ abstract class Organism implements Comparable<Organism> {
       this.energy = 0;
     } else if (this.energy > base()) {
       float toGrowWith = min(this.energy - base(), growthSpeed);
-      takeAction(getNextAction(), toGrowWith); 
-      this.energy -= toGrowWith; 
+      takeAction(genome.getNextAction(), toGrowWith); 
+      this.energy -= toGrowWith;
     }
   }
-  
+    
   protected abstract float sizeCost(); 
   
   protected abstract void reduceBaseBy(float amount); 
