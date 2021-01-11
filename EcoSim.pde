@@ -23,14 +23,26 @@ void draw() {
     feedPlants();
     homeostasis();
     killOrganisms(); 
-  } else {
-    textSize(16);
-    text("paused", 13, 60);
-  }
+  } 
+  pausedText(); 
 }
 
 void mouseClicked() {
-  isPaused = !isPaused; 
+  if (isPaused) {
+    isPaused = false; 
+  } else if (mouseX < 100 && mouseY < 100) {
+    isPaused = true; 
+  }
+}
+
+void pausedText() {
+  if (isPaused) {
+    textSize(16);
+    text("paused", 13, 60);
+  } else {
+    textSize(16);
+    text("pause", 13, 60);
+  }
 }
 
 // === Board Diminsions === //
@@ -43,9 +55,10 @@ final float headSizeMultiplier = 1;
 final float jawsSizeMultiplier = 1;
 final float trunkSizeMultiplier = 1;
 final float canopySizeMultiplier = 1;
+final boolean displayLightRays = false; 
 
 // === Starting Situation === //
-final int startingPlants = 500; 
+final int startingPlants = 200; 
 final float plantStartingEnergy = 20;
 final int startingHerbavores = 5; 
 final int startingCarnivores = 20; 
@@ -60,7 +73,8 @@ final int gracePeriod = 10;
 // === Energy and Costs === //
 final float infancyLength = 20; 
 final float growthSpeed = 0.5;
-final float sunlightPer10kPixels = 20; // was: 8
+final float energyPerRay = 20; // was: 1 
+final float sunlightPer10kPixels = 1; // was: 20 
 final float energyCostPerFrame = 0.003; 
 final float costPerBodySize = 0.01; 
 final float costPerTrunkSize = 0.01; 

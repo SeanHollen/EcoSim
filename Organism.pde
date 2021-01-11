@@ -60,7 +60,7 @@ abstract class Organism implements Comparable<Organism> {
   }
   
   public void setRandomOrientation() {
-    orientationInRadians = random(2 * PI);
+    orientationInRadians = random(2*PI);
   }
   
   public void setOrientation(float newOrientation) {
@@ -68,7 +68,7 @@ abstract class Organism implements Comparable<Organism> {
   }
   
   public void reverseOrientation() {
-    orientationInRadians = (orientationInRadians + PI) % (2 * PI); 
+    orientationInRadians = (orientationInRadians + PI) % (2*PI); 
   }
   
   public void ageUp() {
@@ -85,8 +85,27 @@ abstract class Organism implements Comparable<Organism> {
     } 
     return lifeEvents.get(eventsIndex++);
   }
+    
+  public void homeostasis(float toDrain) {
+    this.energy -= toDrain; 
+    this.energy -= (toDrain * sizeCost());
+    if (this.energy < 0) {
+      reduceBaseBy(abs(this.energy)); 
+      this.energy = 0;
+    } else if (this.energy > base()) {
+      float toGrowWith = min(this.energy - base(), growthSpeed);
+      takeAction(getNextAction(), toGrowWith); 
+      this.energy -= toGrowWith; 
+    }
+  }
   
-  public abstract void homeostasis(float toDrain);
+  protected abstract float sizeCost(); 
+  
+  protected abstract void reduceBaseBy(float amount); 
+  
+  protected abstract float base(); 
+  
+  protected abstract void takeAction(Action action, float toGrowWith); 
   
   protected abstract void addEnergy(float energy);
   

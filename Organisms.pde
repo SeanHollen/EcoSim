@@ -101,7 +101,7 @@ void feedPlants() {
   Collections.sort(lightRays); 
   HashMap<Location, Plant> plantsToGetLight = plantsToGetLight(lightRays);
   for (Location key : plantsToGetLight.keySet()) {
-    plantsToGetLight.get(key).obsorbSunlight(); 
+    plantsToGetLight.get(key).obsorbSunlight(energyPerRay); 
   }
 }
 
@@ -113,7 +113,9 @@ ArrayList<Location> makeLightRays() {
   for (int i = 0; i < numLightRays; i++) {
     Location newRay = new Location(random(boardX), random(boardY));
     lightRays.add(newRay); 
-    //drawRay(newRay);
+    if (displayLightRays) {
+      drawRay(newRay);
+    }
   }
   return lightRays; 
 }

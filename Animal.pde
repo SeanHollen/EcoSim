@@ -98,19 +98,13 @@ class Animal extends Organism {
     super.energy += energy; 
   }
   
-  public void homeostasis(float toDrain) {
-    super.energy -= toDrain; 
-    float piBodySquared = (bodySize * bodySize * PI); 
-    super.energy -= (toDrain * costPerBodySize * piBodySquared);
-    if (super.energy < 0) {
-      removeFromBody(abs(super.energy)); 
-      super.energy = 0;
-    } else if (super.energy > this.bodySize) {
-      float toGrowWith = min(super.energy - bodySize, growthSpeed);
-      getNextAction().act(this, toGrowWith); 
-      super.energy -= toGrowWith; 
-    }
-  }
+  protected float sizeCost() { return bodySize * bodySize * PI * costPerBodySize; }
+  
+  protected void reduceBaseBy(float amount) { removeFromBody(amount); }
+  
+  protected float base() { return this.bodySize; }
+  
+  protected void takeAction(Action action, float toGrowWith) { action.act(this, toGrowWith); }
   
   protected float removeFromBody(float toRemove) {
     toRemove = min(toRemove, bodySize); 

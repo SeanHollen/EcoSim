@@ -30,19 +30,13 @@ class Plant extends Organism {
     super.energy += energy; 
   }
   
-  public void homeostasis(float toDrain) {
-    super.energy -= toDrain; 
-    float piTrunkCubed = (trunk * trunk * trunk * PI); 
-    super.energy -= (toDrain * costPerTrunkSize * piTrunkCubed);
-    if (super.energy < 0) {
-      reduceTrunkBy(abs(super.energy)); 
-      super.energy = 0;
-    } else if (super.energy > this.trunk) {
-      float toGrowWith = min(super.energy - trunk, growthSpeed);
-      getNextAction().act(this, toGrowWith); 
-      super.energy -= toGrowWith; 
-    }
-  }
+  protected float sizeCost() { return trunk * trunk * trunk * PI * costPerTrunkSize; }
+  
+  protected void reduceBaseBy(float amount) { reduceTrunkBy(amount); }
+  
+  protected float base() { return this.trunk; }
+  
+  protected void takeAction(Action action, float toGrowWith) { action.act(this, toGrowWith); }
   
   private void reduceTrunkBy(float amount) {
     trunk -= amount; 
