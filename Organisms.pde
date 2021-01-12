@@ -9,10 +9,10 @@ void addStartingPlants(int numToMake) {
   for (int i = 0; i < 3; i++) {
     actions.add(new GrowCanopy());
   }
-  actions.add(new Reproduce(40, 100, 500)); 
+  actions.add(new Reproduce(40, 100, 500));
   for (int i = 0; i < numToMake; i++) {
-    Location newLocation = new Location(random(BOARD_X), random(BOARD_Y));
-    Plant newPlant = new Plant(new Genome(actions), newLocation, PLANT_STARTING_ENERGY);
+    Genome genome = new Genome(actions, new int[]{66, 245, 114});
+    Plant newPlant = new Plant(genome, new Location(), PLANT_STARTING_ENERGY);
     organisms.add(newPlant);
   }
 }
@@ -25,8 +25,8 @@ void addStartingHerbavores(int numToMake) {
   actions.add(new GrowGrazing()); 
   actions.add(new Reproduce(40, 0, 500)); 
   for (int i = 0; i < numToMake; i++) {
-    Location newLocation = new Location();
-    Animal newAnimal = new Animal(new Genome(actions), newLocation, START_BODY_SIZE, START_BODY_SIZE);
+    Genome genome = new Genome(actions, new int[]{219, 197, 156});
+    Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
     newAnimal.grazing = START_GRAZE; 
     organisms.add(newAnimal);
   }
@@ -38,10 +38,10 @@ void addStartingCarnivores(int numToMake) {
     actions.add(new GrowBody()); 
   }
   actions.add(new GrowJaws());
-  actions.add(new Reproduce(20, 100, 500)); 
+  actions.add(new Reproduce(30, 100, 500)); 
   for (int i = 0; i < numToMake; i++) {
-    Location newLocation = new Location();
-    Animal newAnimal = new Animal(new Genome(actions), newLocation, START_BODY_SIZE, START_BODY_SIZE);
+    Genome genome = new Genome(actions, new int[]{237, 40, 40});
+    Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
     newAnimal.jaws = START_JAWS; 
     organisms.add(newAnimal);
   }
@@ -90,8 +90,8 @@ void checkCollisionsRightOf(Organism org1, int indexOfOrganism) {
         return; 
       }
       if (org1.intersects(org2)) {
-        org1.modifyCollidedOrganisms(org2);
-        org2.modifyCollidedOrganisms(org1); 
+        org1.actOnOrganism(org2);
+        org2.actOnOrganism(org1); 
       }
     }
 }
@@ -120,7 +120,7 @@ ArrayList<Location> makeLightRays() {
   return lightRays; 
 }
 
-// be careful cleaning this code, the algorithm is clever but quite complicated  
+// be careful cleaning this code, the algorithm is clever but quite complicated/integrated  
 HashMap<Location, Plant> plantsToGetLight(ArrayList<Location> lightRays) {
   ensureSorted(); 
   HashMap<Location, Plant> results = new HashMap<Location, Plant>(); 

@@ -58,13 +58,14 @@ final float CANOPY_SIZE_VIEW = 1;
 final boolean SHOW_LIGHT_RAYS = false; 
 
 // === Starting Situation === //
-final int STARTING_PLANTS = 200; 
+final int STARTING_PLANTS = 100; //was: 200
 final float PLANT_STARTING_ENERGY = 20;
 final int START_HERBAVORES = 5; 
 final int START_CARNIVORES = 20; 
-final float START_BODY_SIZE = 10; 
+final float START_ANIMAL_ENERGY = 40; 
+//final float START_BODY_SIZE = 20; //was: 10
 final float START_GRAZE = 1.5; 
-final float START_JAWS = 2.5; 
+final float START_JAWS = 5; 
 
 // === Movement === //
 final float SPEED_MULTIPLE = 2; 
@@ -73,11 +74,11 @@ final int GRACE_PERIOD = 10;
 // === Energy and Costs === //
 final float INFANCY_LENGTH = 20; 
 final float GROWTH_SPEED = 0.5;
-final float ENERGY_PER_RAY = 20; // was: 1 
-final float RAYS_PER_10K_PIXELS = 1; // was: 20 
-final float ENERGY_COST = 0.006; //was: .003
-final float COST_PER_BODY_SIZE = 0.005; //was: .01
-final float COST_PER_TRUNK = 0.005; //was: .01
+final float ENERGY_PER_RAY = 20; 
+final float RAYS_PER_10K_PIXELS = 1; 
+final float ENERGY_COST = 0.006; 
+final float COST_PER_BODY_SIZE = 0.005; 
+final float COST_PER_TRUNK = 0.005; 
 final float SEED_DISPERSAL_COST = 0; 
 
 // === Restrictions === //

@@ -70,7 +70,7 @@ class GrowCanopy implements Action {
   public void act(Plant plant, float amount) {
     if (plant.trunk * CANOPY_MAX_SIZE_X >= plant.canopy + amount) {
       plant.canopy += amount; 
-    }
+    } 
   }
   
   public void act(Animal notapplicable, float amount){}

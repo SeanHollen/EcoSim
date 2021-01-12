@@ -73,7 +73,7 @@ class Animal extends Organism {
     return (int) (this.bodySize * BODY_SIZE_VIEW); 
   }
   
-  public void modifyCollidedOrganisms(Organism other) {
+  public void actOnOrganism(Organism other) {
     if (!inGracePeriod(other)) {
       int toGrowBy = 0;
       toGrowBy += other.removeFromCanopy(this.grazing); 
@@ -126,7 +126,11 @@ class Animal extends Organism {
   public void obsorbSunlight() {} // does not
      
   public String getType() {
-    return "ANIMAL"; 
+    if (this.jaws > this.grazing) {
+      return "CARNIVORE"; 
+    } else {
+      return "HERBAVORE";
+    }
   }
   
   public boolean isDead() {

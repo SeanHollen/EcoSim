@@ -42,11 +42,20 @@ class Plant extends Organism {
     trunk -= amount; 
     float maxCanopy = min(canopy, trunk * CANOPY_MAX_SIZE_X); 
     canopy = maxCanopy; 
+    if (canopy < trunk) canopy++; trunk--; // keep this line? 
   }
   
   public void drawOrganism() {
+    drawTrunk();
+    drawCanopy();
+  }
+  
+  private void drawTrunk() {
     fill(128,0,0); 
     circle(super.location.getX(), super.location.getY(), (this.trunk * TRUNK_SIZE_VIEW));
+  }
+  
+  private void drawCanopy() {
     fill(66, 245, 114); 
     circle(super.location.getX(), super.location.getY(), (this.canopy * CANOPY_SIZE_VIEW));
   }
@@ -55,7 +64,7 @@ class Plant extends Organism {
     return (int) (canopy * BODY_SIZE_VIEW);
   }
   
-  public void modifyCollidedOrganisms(Organism other) {}
+  public void actOnOrganism(Organism other) {}
   
   public float removeFromCanopy(float toRemove) { 
     toRemove = min(toRemove, canopy); 

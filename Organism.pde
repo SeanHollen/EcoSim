@@ -105,7 +105,7 @@ abstract class Organism implements Comparable<Organism> {
   
   protected abstract int width();
   
-  public abstract void modifyCollidedOrganisms(Organism other);
+  public abstract void actOnOrganism(Organism other);
   
   protected abstract float removeFromBody(float toRemove);
   
@@ -139,7 +139,6 @@ abstract class Organism implements Comparable<Organism> {
     } else {
       return 0;
     }
-    // return (int) (this.leftMostPoint() - other.leftMostPoint()); // we can't do this because casting to int violates precision 
   }
   
   private float leftMostPoint() {
