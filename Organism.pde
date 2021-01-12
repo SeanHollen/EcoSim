@@ -85,7 +85,7 @@ abstract class Organism implements Comparable<Organism> {
       reduceBaseBy(abs(this.energy)); 
       this.energy = 0;
     } else if (this.energy > base()) {
-      float toGrowWith = min(this.energy - base(), growthSpeed);
+      float toGrowWith = min(this.energy - base(), GROWTH_SPEED);
       takeAction(genome.getNextAction(), toGrowWith); 
       this.energy -= toGrowWith;
     }

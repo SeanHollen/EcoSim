@@ -3,6 +3,11 @@ class Location implements Comparable<Location> {
   private float x; 
   private float y; 
   
+  public Location() {
+    this.x = random(BOARD_X); 
+    this.y = random(BOARD_Y); 
+  }
+  
   public Location(float x, float y) {
     this.x = x; 
     this.y = y;
@@ -33,15 +38,15 @@ class Location implements Comparable<Location> {
   }
   
   private void rollOver() {
-    if (x > boardX) {
-      x %= boardX; 
+    if (x > BOARD_X) {
+      x %= BOARD_X; 
     } else if (x < 0) {
-      x = boardX - abs(x); 
+      x = BOARD_X - abs(x); 
     }
-    if (y > boardY) {
-      y %= boardY;
+    if (y > BOARD_Y) {
+      y %= BOARD_Y;
     } else if (y < 0) {
-      y = boardY - abs(y); 
+      y = BOARD_Y - abs(y); 
     }
   }
   

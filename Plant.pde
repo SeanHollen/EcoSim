@@ -30,7 +30,7 @@ class Plant extends Organism {
     super.energy += energy; 
   }
   
-  protected float sizeCost() { return trunk * trunk * trunk * PI * costPerTrunkSize; }
+  protected float sizeCost() { return trunk * trunk * trunk * PI * COST_PER_TRUNK; }
   
   protected void reduceBaseBy(float amount) { reduceTrunkBy(amount); }
   
@@ -40,19 +40,19 @@ class Plant extends Organism {
   
   private void reduceTrunkBy(float amount) {
     trunk -= amount; 
-    float maxCanopy = min(canopy, trunk * canopyMaxSizeMultiplier); 
+    float maxCanopy = min(canopy, trunk * CANOPY_MAX_SIZE_X); 
     canopy = maxCanopy; 
   }
   
   public void drawOrganism() {
     fill(128,0,0); 
-    circle(super.location.getX(), super.location.getY(), (this.trunk * trunkSizeMultiplier));
+    circle(super.location.getX(), super.location.getY(), (this.trunk * TRUNK_SIZE_VIEW));
     fill(66, 245, 114); 
-    circle(super.location.getX(), super.location.getY(), (this.canopy * canopySizeMultiplier));
+    circle(super.location.getX(), super.location.getY(), (this.canopy * CANOPY_SIZE_VIEW));
   }
   
   protected int width() {
-    return (int) (canopy * bodySizeMultiplier);
+    return (int) (canopy * BODY_SIZE_VIEW);
   }
   
   public void modifyCollidedOrganisms(Organism other) {}
@@ -75,7 +75,7 @@ class Plant extends Organism {
   }
   
   public boolean isDead() {
-    return super.age >= infancyLength && this.trunk <= 0; 
+    return super.age >= INFANCY_LENGTH && this.trunk <= 0; 
   }
   
   public float getPlantHeight() {

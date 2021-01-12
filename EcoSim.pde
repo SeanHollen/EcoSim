@@ -1,14 +1,14 @@
 boolean isPaused = false; 
 
 void settings() {
-  size(boardX, boardY);
+  size(BOARD_X, BOARD_Y);
 }
 
 void setup() {
   organisms = new ArrayList<Organism>();
-  addStartingPlants(startingPlants); 
-  addStartingHerbavores(startingHerbavores);
-  addStartingCarnivores(startingCarnivores);
+  addStartingPlants(STARTING_PLANTS); 
+  addStartingHerbavores(START_HERBAVORES);
+  addStartingCarnivores(START_CARNIVORES);
 }
 
 void draw() {
@@ -46,42 +46,43 @@ void pausedText() {
 }
 
 // === Board Diminsions === //
-final int boardX = 750;
-final int boardY = 750; 
+final int BOARD_X = 750;
+final int BOARD_Y = 750; 
 
 // === Visuals === ///
-final float bodySizeMultiplier = 1;
-final float headSizeMultiplier = 1;
-final float jawsSizeMultiplier = 1;
-final float trunkSizeMultiplier = 1;
-final float canopySizeMultiplier = 1;
-final boolean displayLightRays = false; 
+final float BODY_SIZE_VIEW = 1;
+final float HEAD_SIZE_VIEW = 1;
+final float JAWS_SIZE_VIEW = 1;
+final float TRUNK_SIZE_VIEW = 1;
+final float CANOPY_SIZE_VIEW = 1;
+final boolean SHOW_LIGHT_RAYS = false; 
 
 // === Starting Situation === //
-final int startingPlants = 200; 
-final float plantStartingEnergy = 20;
-final int startingHerbavores = 5; 
-final int startingCarnivores = 20; 
-final float startingBodySize = 10; 
-final float startingGraze = 1.5; 
-final float startingJaws = 2.5; 
+final int STARTING_PLANTS = 200; 
+final float PLANT_STARTING_ENERGY = 20;
+final int START_HERBAVORES = 5; 
+final int START_CARNIVORES = 20; 
+final float START_BODY_SIZE = 10; 
+final float START_GRAZE = 1.5; 
+final float START_JAWS = 2.5; 
 
 // === Movement === //
-final float speedMultiplier = 2; 
-final int gracePeriod = 10; 
+final float SPEED_MULTIPLE = 2; 
+final int GRACE_PERIOD = 10; 
 
 // === Energy and Costs === //
-final float infancyLength = 20; 
-final float growthSpeed = 0.5;
-final float energyPerRay = 20; // was: 1 
-final float sunlightPer10kPixels = 1; // was: 20 
-final float energyCostPerFrame = 0.006; //was: .003
-final float costPerBodySize = 0.005; //was: .01
-final float costPerTrunkSize = 0.005; //was: .01
-final float seedDispersalCost = 0; 
+final float INFANCY_LENGTH = 20; 
+final float GROWTH_SPEED = 0.5;
+final float ENERGY_PER_RAY = 20; // was: 1 
+final float RAYS_PER_10K_PIXELS = 1; // was: 20 
+final float ENERGY_COST = 0.006; //was: .003
+final float COST_PER_BODY_SIZE = 0.005; //was: .01
+final float COST_PER_TRUNK = 0.005; //was: .01
+final float SEED_DISPERSAL_COST = 0; 
 
 // === Restrictions === //
-final float canopyMaxSizeMultiplier = 2; 
-final float grazingMaxSizeMultiplier = 0.5;
-final float jawsMaxSizeMultiplier = 0.75;
-final float legsMaxSizeMultiplier = 0.5; 
+final float CANOPY_MAX_SIZE_X = 2; 
+final float GRAZING_MAX_SIZE_X = 0.5;
+final float JAWS_MAX_SIZE_X = 0.75;
+final float LEGS_MAX_SIZE_X = 0.5; 
+final float SHELL_MAX_SIZE_X = 0.2; 

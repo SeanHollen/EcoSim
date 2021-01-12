@@ -38,7 +38,7 @@ class Animal extends Organism {
   }
   
   private float getStep() {
-    return speedMultiplier; 
+    return SPEED_MULTIPLE; 
   }
   
   public void drawOrganism() {
@@ -61,16 +61,16 @@ class Animal extends Organism {
   
   private void drawCarnivoreHead(Location headLoc) {
     fill(237, 40, 40); 
-    circle(headLoc.getX(), headLoc.getY(), (this.jaws * jawsSizeMultiplier));
+    circle(headLoc.getX(), headLoc.getY(), (this.jaws * JAWS_SIZE_VIEW));
   }
   
   private void drawHerbavoreHead(Location headLoc) {
     fill(191, 134, 0); 
-    circle(headLoc.getX(), headLoc.getY(), (this.grazing * headSizeMultiplier));
+    circle(headLoc.getX(), headLoc.getY(), (this.grazing * HEAD_SIZE_VIEW));
   }
   
   protected int width() {
-    return (int) (this.bodySize * bodySizeMultiplier); 
+    return (int) (this.bodySize * BODY_SIZE_VIEW); 
   }
   
   public void modifyCollidedOrganisms(Organism other) {
@@ -91,14 +91,14 @@ class Animal extends Organism {
   
   public boolean inGracePeriod(Organism other) {
     return otherOrganismsConsumedTimes.containsKey(other.ID) 
-      && frameCount - otherOrganismsConsumedTimes.get(other.ID) <= gracePeriod; 
+      && frameCount - otherOrganismsConsumedTimes.get(other.ID) <= GRACE_PERIOD; 
   }
   
   protected void addEnergy(float energy) {
     super.energy += energy; 
   }
   
-  protected float sizeCost() { return bodySize * bodySize * PI * costPerBodySize; }
+  protected float sizeCost() { return bodySize * bodySize * PI * COST_PER_BODY_SIZE; }
   
   protected void reduceBaseBy(float amount) { removeFromBody(amount); }
   
@@ -109,9 +109,9 @@ class Animal extends Organism {
   protected float removeFromBody(float toRemove) {
     toRemove = min(toRemove, bodySize); 
     bodySize -= toRemove; 
-    float maxGrazing = min(grazing, bodySize * grazingMaxSizeMultiplier); 
+    float maxGrazing = min(grazing, bodySize * GRAZING_MAX_SIZE_X); 
     grazing = maxGrazing; 
-    float maxJaws = min(jaws, bodySize * jawsMaxSizeMultiplier); 
+    float maxJaws = min(jaws, bodySize * JAWS_MAX_SIZE_X); 
     jaws = maxJaws; 
     return toRemove; 
   }
@@ -130,7 +130,7 @@ class Animal extends Organism {
   }
   
   public boolean isDead() {
-    return super.age >= infancyLength && this.bodySize <= 0; 
+    return super.age >= INFANCY_LENGTH && this.bodySize <= 0; 
   }
   
   public float getPlantHeight() {

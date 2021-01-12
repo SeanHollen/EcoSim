@@ -41,7 +41,7 @@ class Reproduce implements Action {
       if (newOrg != null) {
         // total child starting energy is childSize (most significant) + energyUsed - cost of seed dispersal 
         newOrg.energy += energyUsed; 
-        newOrg.energy -= (seedDispersal * seedDispersalCost); 
+        newOrg.energy -= (seedDispersal * SEED_DISPERSAL_COST); 
         organisms.add(newOrg); 
       }
     }
@@ -68,7 +68,7 @@ class GrowBody implements Action {
 class GrowCanopy implements Action {
   
   public void act(Plant plant, float amount) {
-    if (plant.trunk * canopyMaxSizeMultiplier >= plant.canopy + amount) {
+    if (plant.trunk * CANOPY_MAX_SIZE_X >= plant.canopy + amount) {
       plant.canopy += amount; 
     }
   }
@@ -96,7 +96,7 @@ class GrowTrunk implements Action {
 class GrowJaws implements Action {
   
   public void act(Animal animal, float amount) {
-    if (animal.bodySize * jawsMaxSizeMultiplier >= animal.jaws + amount) {
+    if (animal.bodySize * JAWS_MAX_SIZE_X >= animal.jaws + amount) {
       animal.jaws += amount; 
     }
   }
@@ -111,7 +111,7 @@ class GrowJaws implements Action {
 class GrowGrazing implements Action {
   
   public void act(Animal animal, float amount) {
-    if (animal.bodySize * grazingMaxSizeMultiplier >= animal.grazing + amount) {
+    if (animal.bodySize * GRAZING_MAX_SIZE_X >= animal.grazing + amount) {
       animal.grazing += amount; 
     }
   }
@@ -126,7 +126,7 @@ class GrowGrazing implements Action {
 class GrowLegs implements Action {
   
   public void act(Animal animal, float amount) {
-    if (animal.legs * legsMaxSizeMultiplier >= animal.legs + amount) {
+    if (animal.legs * LEGS_MAX_SIZE_X >= animal.legs + amount) {
       animal.legs += amount; 
     }
   }
@@ -138,6 +138,27 @@ class GrowLegs implements Action {
   Action mutation() { return this; }
 }
 
+class GrowShell implements Action {
+  
+  public void act(Animal animal, float amount) {
+    growShell(animal, amount);
+  }
+  
+  public void act(Plant plant, float amount) {
+    growShell(plant, amount); 
+  }
+  
+  private void growShell(Organism org, float amount) {
+    if (org.shell * SHELL_MAX_SIZE_X >= org.shell + amount) {
+      org.shell += amount; 
+    }
+  }
+  
+  public char toChar() { return 'S'; }
+  
+  Action mutation() { return this; }
+}
+
 // R: reproduce
 // B: body
 // C: canopy
@@ -145,3 +166,4 @@ class GrowLegs implements Action {
 // J: jaws
 // G: grazing 
 // L: legs
+// S: shell

@@ -11,8 +11,8 @@ void addStartingPlants(int numToMake) {
   }
   actions.add(new Reproduce(40, 100, 500)); 
   for (int i = 0; i < numToMake; i++) {
-    Location newLocation = new Location(random(boardX), random(boardY));
-    Plant newPlant = new Plant(new Genome(actions), newLocation, plantStartingEnergy);
+    Location newLocation = new Location(random(BOARD_X), random(BOARD_Y));
+    Plant newPlant = new Plant(new Genome(actions), newLocation, PLANT_STARTING_ENERGY);
     organisms.add(newPlant);
   }
 }
@@ -25,9 +25,9 @@ void addStartingHerbavores(int numToMake) {
   actions.add(new GrowGrazing()); 
   actions.add(new Reproduce(40, 0, 500)); 
   for (int i = 0; i < numToMake; i++) {
-    Location newLocation = new Location(random(boardX), random(boardY));
-    Animal newAnimal = new Animal(new Genome(actions), newLocation, startingBodySize, startingBodySize);
-    newAnimal.grazing = startingGraze; 
+    Location newLocation = new Location();
+    Animal newAnimal = new Animal(new Genome(actions), newLocation, START_BODY_SIZE, START_BODY_SIZE);
+    newAnimal.grazing = START_GRAZE; 
     organisms.add(newAnimal);
   }
 }
@@ -40,9 +40,9 @@ void addStartingCarnivores(int numToMake) {
   actions.add(new GrowJaws());
   actions.add(new Reproduce(20, 100, 500)); 
   for (int i = 0; i < numToMake; i++) {
-    Location newLocation = new Location(random(boardX), random(boardY));
-    Animal newAnimal = new Animal(new Genome(actions), newLocation, startingBodySize, startingBodySize);
-    newAnimal.jaws = startingJaws; 
+    Location newLocation = new Location();
+    Animal newAnimal = new Animal(new Genome(actions), newLocation, START_BODY_SIZE, START_BODY_SIZE);
+    newAnimal.jaws = START_JAWS; 
     organisms.add(newAnimal);
   }
 }
@@ -101,19 +101,19 @@ void feedPlants() {
   Collections.sort(lightRays); 
   HashMap<Location, Plant> plantsToGetLight = plantsToGetLight(lightRays);
   for (Location key : plantsToGetLight.keySet()) {
-    plantsToGetLight.get(key).obsorbSunlight(energyPerRay); 
+    plantsToGetLight.get(key).obsorbSunlight(ENERGY_PER_RAY); 
   }
 }
 
 ArrayList<Location> makeLightRays() {
-  int boardSize = boardX * boardY; 
+  int boardSize = BOARD_X * BOARD_Y; 
   float boardSizeIn10kPixeslsSquared = (float) boardSize / 10000.0; 
-  int numLightRays = (int) (boardSizeIn10kPixeslsSquared * sunlightPer10kPixels); 
+  int numLightRays = (int) (boardSizeIn10kPixeslsSquared * RAYS_PER_10K_PIXELS); 
   ArrayList<Location> lightRays = new ArrayList<Location>(); 
   for (int i = 0; i < numLightRays; i++) {
-    Location newRay = new Location(random(boardX), random(boardY));
+    Location newRay = new Location();
     lightRays.add(newRay); 
-    if (displayLightRays) {
+    if (SHOW_LIGHT_RAYS) {
       drawRay(newRay);
     }
   }
@@ -159,7 +159,7 @@ void drawRay(Location ray) {
 
 void homeostasis() {
   for (int i = 0; i < organisms.size(); i++) {
-    organisms.get(i).homeostasis(energyCostPerFrame); 
+    organisms.get(i).homeostasis(ENERGY_COST); 
   }
 }
 
