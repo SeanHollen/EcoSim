@@ -84,3 +84,4 @@ final float seedDispersalCost = 0;
 final float canopyMaxSizeMultiplier = 2; 
 final float grazingMaxSizeMultiplier = 0.5;
 final float jawsMaxSizeMultiplier = 0.75;
+final float legsMaxSizeMultiplier = 0.5; 

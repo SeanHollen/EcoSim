@@ -5,7 +5,7 @@ interface Action {
   void act(Animal organism, float amount);
   void act(Plant organism, float amount);
   char toChar(); 
-  void mutate(); 
+  Action mutation(); 
 }
 
 class Reproduce implements Action {
@@ -49,7 +49,7 @@ class Reproduce implements Action {
   
   public char toChar() { return 'R'; }
   
-  void mutate() {}
+  Action mutation() { return this; }
 }
 
 class GrowBody implements Action {
@@ -62,7 +62,7 @@ class GrowBody implements Action {
  
  public char toChar() { return 'B'; }
  
- void mutate() {}
+ Action mutation() { return this; }
 }
 
 class GrowCanopy implements Action {
@@ -77,7 +77,7 @@ class GrowCanopy implements Action {
   
   public char toChar() { return 'C'; }
   
-  void mutate() {}
+  Action mutation() { return this; }
 }
 
 class GrowTrunk implements Action {
@@ -90,7 +90,7 @@ class GrowTrunk implements Action {
   
   public char toChar() { return 'T'; }
   
-  void mutate() {}
+  Action mutation() { return this; }
 }
 
 class GrowJaws implements Action {
@@ -105,7 +105,7 @@ class GrowJaws implements Action {
   
   public char toChar() { return 'J'; }
   
-  void mutate() {}
+  Action mutation() { return this; }
 }
 
 class GrowGrazing implements Action {
@@ -120,7 +120,22 @@ class GrowGrazing implements Action {
   
   public char toChar() { return 'G'; }
   
-  void mutate() {}
+  Action mutation() { return this; }
+}
+
+class GrowLegs implements Action {
+  
+  public void act(Animal animal, float amount) {
+    if (animal.legs * legsMaxSizeMultiplier >= animal.legs + amount) {
+      animal.legs += amount; 
+    }
+  }
+  
+  public void act(Plant notapplicable, float amount){}
+  
+  public char toChar() { return 'L'; }
+  
+  Action mutation() { return this; }
 }
 
 // R: reproduce
@@ -129,3 +144,4 @@ class GrowGrazing implements Action {
 // T: trunk
 // J: jaws
 // G: grazing 
+// L: legs

@@ -7,7 +7,8 @@ abstract class Organism implements Comparable<Organism> {
   private int age;
   private int ID; 
   private float energy; 
-  public float shell, spikes; 
+  public float shell;
+  private float spikes; 
   
   private Genome genome; 
   
