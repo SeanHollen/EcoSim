@@ -6,17 +6,24 @@ class Genome {
   private ArrayList<Action> lifeEvents; 
   private int eventsIndex; 
   private int[] asColors; 
+  private int affinityDistance; 
   
   public Genome(ArrayList<Action> lifeEvents) {
     this.lifeEvents = lifeEvents; 
     this.eventsIndex = 0; 
     this.asColors = new int[]{219, 197, 156}; 
+    this.affinityDistance = STARTING_GENETIC_AFFINITY;
   }
   
   public Genome(ArrayList<Action> lifeEvents, int[] colors) {
     this.lifeEvents = lifeEvents; 
     this.eventsIndex = 0; 
     this.asColors = colors; 
+    this.affinityDistance = STARTING_GENETIC_AFFINITY;
+  }
+  
+  public void setFillToColor() {
+    fill(asColors[0], asColors[1], asColors[2]); 
   }
   
   private Action getNextAction() {
@@ -43,6 +50,10 @@ class Genome {
       b.append(a.toChar()); 
     }
     return b.toString(); 
+  }
+  
+  public boolean sameSpecies(Genome other) {
+    return geneticDistance(other) <= affinityDistance; 
   }
   
   public int geneticDistance(Genome other) {

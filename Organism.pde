@@ -111,7 +111,7 @@ abstract class Organism implements Comparable<Organism> {
   
   protected abstract float removeFromCanopy(float toRemove);  
     
-  public abstract boolean canBeEatenWithJaws(float otherJawsSize);
+  public abstract boolean canBePredatedBy(Animal other);
   
   public abstract void move(); 
   
@@ -120,6 +120,10 @@ abstract class Organism implements Comparable<Organism> {
   public abstract void obsorbSunlight(float sunlight); 
   
   public abstract void obsorbSunlight(); 
+  
+  protected boolean sameSpecies(Organism other) {
+    return this.genome.sameSpecies(other.genome); 
+  }
   
   public abstract String getType(); 
   

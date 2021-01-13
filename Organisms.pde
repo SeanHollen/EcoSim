@@ -40,7 +40,7 @@ void addStartingCarnivores(int numToMake) {
   actions.add(new GrowJaws());
   actions.add(new Reproduce(30, 100, 500)); 
   for (int i = 0; i < numToMake; i++) {
-    Genome genome = new Genome(actions, new int[]{237, 40, 40});
+    Genome genome = new Genome(actions, new int[]{217, 118, 85});
     Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
     newAnimal.jaws = START_JAWS; 
     organisms.add(newAnimal);

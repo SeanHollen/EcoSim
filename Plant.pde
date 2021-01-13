@@ -72,7 +72,7 @@ class Plant extends Organism {
     return toRemove; 
   }
   
-  public boolean canBeEatenWithJaws(float otherJawsSize) {
+  public boolean canBePredatedBy(Animal other) {
     return false; 
   }
   

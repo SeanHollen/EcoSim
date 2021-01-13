@@ -42,9 +42,14 @@ class Animal extends Organism {
   }
   
   public void drawOrganism() {
-    fill(219, 197, 156); 
-    circle(super.location.getX(), super.location.getY(), this.width());
+    drawBody();
     drawHead(); 
+  }
+  
+  private void drawBody() {
+    //fill(219, 197, 156); 
+    super.genome.setFillToColor(); 
+    circle(super.location.getX(), super.location.getY(), this.width());
   }
   
   private void drawHead() {
@@ -77,13 +82,12 @@ class Animal extends Organism {
     if (!inGracePeriod(other)) {
       int toGrowBy = 0;
       toGrowBy += other.removeFromCanopy(this.grazing); 
-      if (other.canBeEatenWithJaws(this.jaws)) {
+      if (other.canBePredatedBy(this)) {
         toGrowBy += other.removeFromBody(this.jaws); 
       }
       if (toGrowBy > 0) {
         addEnergy(toGrowBy);
       }
-      //reverseOrientation();
       setRandomOrientation(); 
     } 
     otherOrganismsConsumedTimes.put(other.ID, frameCount); 
@@ -118,8 +122,8 @@ class Animal extends Organism {
   
   public float removeFromCanopy(float toRemove) { return 0; }; 
   
-  public boolean canBeEatenWithJaws(float otherJawsSize) {
-    return this.jaws < otherJawsSize; 
+  public boolean canBePredatedBy(Animal other) {
+    return this.jaws < other.jaws && !this.sameSpecies(other);
   }
   
   public void obsorbSunlight(float sunlight) {} // does not

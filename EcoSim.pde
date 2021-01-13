@@ -63,9 +63,9 @@ final float PLANT_STARTING_ENERGY = 20;
 final int START_HERBAVORES = 5; 
 final int START_CARNIVORES = 20; 
 final float START_ANIMAL_ENERGY = 40; 
-//final float START_BODY_SIZE = 20; //was: 10
 final float START_GRAZE = 1.5; 
 final float START_JAWS = 5; 
+final int STARTING_GENETIC_AFFINITY = 5; 
 
 // === Movement === //
 final float SPEED_MULTIPLE = 2; 
