@@ -6,16 +6,16 @@ class Animal extends Organism {
   private HashMap<Integer, Integer> otherOrganismsConsumedTimes;
   
   public Animal(Genome genome, Location location, float energy) {
-    this(genome, location, energy, 2, 0, 0, 0, 0, 0, 0, 0, 0); 
+    this(genome, location, energy, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0); 
   }
   
-  public Animal(Genome genome, Location location, float energy, float bodySize) {
-    this(genome, location, energy, bodySize, 0, 0, 0, 0, 0, 0, 0, 0); 
+  public Animal(Genome genome, Location location, float energy, int generation) {
+    this(genome, location, energy, generation, 2, 0, 0, 0, 0, 0, 0, 0, 0); 
   }
   
-  private Animal(Genome genome, Location location, float energy, float bodySize, float grazing, 
+  private Animal(Genome genome, Location location, float energy, int generation, float bodySize, float grazing, 
   float jaws, float legs, float fins, float climbing, float burrowing, float fur, float longNeck) {
-    super(genome, location, energy);
+    super(genome, location, energy, generation);
     this.bodySize = bodySize; 
     this.grazing = grazing; 
     this.jaws = jaws; 
@@ -28,8 +28,8 @@ class Animal extends Organism {
     otherOrganismsConsumedTimes = new HashMap<Integer, Integer>(); 
   }
   
-  protected Organism child(Genome genome, Location loc, float startingEnergy) {
-    return new Animal(genome, loc, startingEnergy);
+  protected Organism child(Genome genome, Location loc, float startingEnergy, int generation) {
+    return new Animal(genome, loc, startingEnergy, generation);
   }
   
   public void move() {
@@ -44,6 +44,18 @@ class Animal extends Organism {
   public void drawOrganism() {
     drawBody();
     drawHead(); 
+  }
+  
+  public void drawAndDisplayInfo() {
+    super.drawAndDisplayInfo();
+    text("BODY SIZE " + round(bodySize), textXOffset, panelLoc += panelFont);
+    text("GRAZING " + round(grazing), textXOffset, panelLoc += panelFont);
+    text("JAWS " + round(jaws), textXOffset, panelLoc += panelFont);
+    text("LEGS " + round(legs), textXOffset, panelLoc += panelFont);
+    stroke(2); 
+    stroke(25, 0, 255); 
+    drawBody();
+    drawHead();
   }
   
   private void drawBody() {

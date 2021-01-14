@@ -12,14 +12,14 @@ class Genome {
     this.lifeEvents = lifeEvents; 
     this.eventsIndex = 0; 
     this.asColors = new int[]{219, 197, 156}; 
-    this.affinityDistance = STARTING_GENETIC_AFFINITY;
+    this.affinityDistance = START_GENETIC_AFFINITY;
   }
   
   public Genome(ArrayList<Action> lifeEvents, int[] colors) {
     this.lifeEvents = lifeEvents; 
     this.eventsIndex = 0; 
     this.asColors = colors; 
-    this.affinityDistance = STARTING_GENETIC_AFFINITY;
+    this.affinityDistance = START_GENETIC_AFFINITY;
   }
   
   public void setFillToColor() {

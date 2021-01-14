@@ -5,17 +5,21 @@ class Plant extends Organism {
   public float canopy; 
   
   public Plant(Genome genome, Location location, float energy) {
-    this(genome, location, energy, 2, 0); 
+    this(genome, location, energy, 0, 2, 0); 
   }
   
-  public Plant(Genome genome, Location location, float energy, float trunk, float canopy) {
-    super(genome, location, energy);
+  public Plant(Genome genome, Location location, float energy, int generation) {
+    this(genome, location, energy, generation, 2, 0); 
+  }
+  
+  public Plant(Genome genome, Location location, float energy, int generation, float trunk, float canopy) {
+    super(genome, location, energy, generation);
     this.trunk = trunk;
     this.canopy = canopy; 
   }
   
-  protected Organism child(Genome genome, Location newLoc, float startingEnergy) {
-     return new Plant(genome, newLoc, startingEnergy);
+  protected Organism child(Genome genome, Location newLoc, float startingEnergy, int generation) {
+     return new Plant(genome, newLoc, startingEnergy, generation);
   }
   
   public void obsorbSunlight() {
@@ -46,6 +50,16 @@ class Plant extends Organism {
   }
   
   public void drawOrganism() {
+    drawTrunk();
+    drawCanopy();
+  }
+  
+  public void drawAndDisplayInfo() {
+    super.drawAndDisplayInfo();
+    text("TRUNK " + round(trunk), textXOffset, panelLoc += panelFont);
+    text("CANOPY " + round(canopy), textXOffset, panelLoc += panelFont);
+    stroke(2); 
+    stroke(25, 0, 255); 
     drawTrunk();
     drawCanopy();
   }

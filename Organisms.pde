@@ -2,29 +2,30 @@ import java.util.Collections;
 
 ArrayList<Organism> organisms; 
 boolean areOrganismsSorted = false; 
+Organism selected = null; 
 
-void addStartingPlants(int numToMake) {
+void addStartingPlants() {
   ArrayList<Action> actions = new ArrayList<Action>(); 
   actions.add(new GrowTrunk());
   for (int i = 0; i < 3; i++) {
     actions.add(new GrowCanopy());
   }
   actions.add(new Reproduce(40, 100, 500));
-  for (int i = 0; i < numToMake; i++) {
+  for (int i = 0; i < START_PLANTS; i++) {
     Genome genome = new Genome(actions, new int[]{66, 245, 114});
-    Plant newPlant = new Plant(genome, new Location(), PLANT_STARTING_ENERGY);
+    Plant newPlant = new Plant(genome, new Location(), PLANT_START_ENERGY);
     organisms.add(newPlant);
   }
 }
 
-void addStartingHerbavores(int numToMake) {
+void addStartingHerbavores() {
   ArrayList<Action> actions = new ArrayList<Action>(); 
   for (int i = 0; i < 4; i++) {
     actions.add(new GrowBody()); 
   }
   actions.add(new GrowGrazing()); 
   actions.add(new Reproduce(40, 0, 500)); 
-  for (int i = 0; i < numToMake; i++) {
+  for (int i = 0; i < START_HERBAVORES; i++) {
     Genome genome = new Genome(actions, new int[]{219, 197, 156});
     Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
     newAnimal.grazing = START_GRAZE; 
@@ -32,18 +33,33 @@ void addStartingHerbavores(int numToMake) {
   }
 }
 
-void addStartingCarnivores(int numToMake) {
+void addStartingCarnivores() {
   ArrayList<Action> actions = new ArrayList<Action>(); 
   for (int i = 0; i < 6; i++) {
     actions.add(new GrowBody()); 
   }
   actions.add(new GrowJaws());
   actions.add(new Reproduce(30, 100, 500)); 
-  for (int i = 0; i < numToMake; i++) {
+  for (int i = 0; i < START_CARNIVORES; i++) {
     Genome genome = new Genome(actions, new int[]{217, 118, 85});
     Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
     newAnimal.jaws = START_JAWS; 
     organisms.add(newAnimal);
+  }
+}
+
+void selectOrganism() {
+  selected = null; 
+  Location loc = new Location(mouseX, mouseY); 
+  ensureSorted(); 
+  int i = 0; 
+  while (i < organisms.size() && mouseX < organisms.get(i).location.getX()) i++; 
+  while (i < organisms.size()) {
+    if (organisms.get(i).intersects(loc)) {
+      selected = organisms.get(i); 
+      return;
+    }
+    i++;
   }
 }
 
@@ -53,6 +69,12 @@ void drawOrganisms() {
   for (Organism organism : organisms) {
     organism.drawOrganism();
   }
+}
+
+void drawSelected() {
+  if (selected != null) {
+    selected.drawAndDisplayInfo();
+  } 
 }
 
 void drawNumOrganisms() {

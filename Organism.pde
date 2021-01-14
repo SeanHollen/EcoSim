@@ -9,18 +9,24 @@ abstract class Organism implements Comparable<Organism> {
   private float energy; 
   public float shell;
   private float spikes; 
+  private int generation;
   
   private Genome genome; 
   
   public Organism(Genome genome, Location location, float energy) {
+    this(genome, location, energy, 0);
+  }
+  
+  public Organism(Genome genome, Location location, float energy, int generation) {
+    ID = OrganismIDMaker.getID();
     this.location = location; 
     this.energy = energy; 
     this.genome = genome;
+    this.generation = generation; 
     setRandomOrientation(); 
     age = 1; 
     shell = 0; 
-    spikes = 0; 
-    ID = OrganismIDMaker.getID(); 
+    spikes = 0;  
   }
   
   public Organism birth(float energyRequired, float seedDispersal) {
@@ -29,10 +35,10 @@ abstract class Organism implements Comparable<Organism> {
     }
     Location newLoc = this.location.getLocOffBy(seedDispersal, random(2 * PI));
     this.energy -= energyRequired; 
-    return child(this.genome, newLoc, energyRequired);
+    return child(this.genome, newLoc, energyRequired, generation + 1);
   }
   
-  protected abstract Organism child(Genome genome, Location newLoc, float startingEnergy); 
+  protected abstract Organism child(Genome genome, Location newLoc, float startingEnergy, int generation); 
     
   public boolean inIntersectingXRange(Organism other) {
     float ourRightMostXPoint = this.location.getX() + (width() / 2);
@@ -102,6 +108,20 @@ abstract class Organism implements Comparable<Organism> {
   protected abstract void addEnergy(float energy);
   
   public abstract void drawOrganism();
+  
+  public void drawAndDisplayInfo() {
+    panelLoc = panelTop;
+    textSize(10);
+    fill(0,0,0);
+    text("ID " + ID, textXOffset, panelLoc += panelFont);
+    text("GENERATION " + generation, textXOffset, panelLoc += panelFont);
+    text("TYPE " + getType(), textXOffset, panelLoc += panelFont);
+    text("GENOME " + genome.asString(), textXOffset, panelLoc += panelFont);
+    text("AGE " + age, textXOffset, panelLoc += panelFont);
+    text("ENERGY " + round(energy), textXOffset, panelLoc += panelFont);
+    text("SHELL " + round(shell), textXOffset, panelLoc += panelFont);
+    text("IS DEAD? " + isDead(), textXOffset, panelLoc += panelFont);
+  }
   
   protected abstract int width();
   
