@@ -59,8 +59,9 @@ final float HEAD_SIZE_VIEW = 1;
 final float JAWS_SIZE_VIEW = 1;
 final float TRUNK_SIZE_VIEW = 1;
 final float CANOPY_SIZE_VIEW = 1;
-final float LEGS_SIZE_VIEW = 5;
-final float SHELL_STROKE = 0.05; 
+final float LEGS_WIDTH_VIEW = 0.5; 
+final float LEGS_LENGTH_VIEW_X = 0.5;
+final float SHELL_STROKE = 0.2; 
 final boolean SHOW_LIGHT_RAYS = false; 
 
 // === Starting Situation === //
@@ -87,6 +88,7 @@ final float ENERGY_COST = 0.006;
 final float COST_PER_BODY_SIZE = 0.005; 
 final float COST_PER_TRUNK = 0.005; 
 final float SEED_DISPERSAL_COST = 0; 
+final float SHELL_PROTECTION = 1; 
 
 // === Restrictions === //
 final float CANOPY_MAX_SIZE_X = 2; 

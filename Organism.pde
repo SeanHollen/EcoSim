@@ -117,6 +117,7 @@ abstract class Organism implements Comparable<Organism> {
     panelLoc = panelTop;
     textSize(10);
     fill(0,0,0);
+    strokeWeight(3);
     text("TYPE " + getType(), textXOffset, panelLoc += panelFont);
     text("GENOME " + genome.asString(), textXOffset, panelLoc += panelFont);
     text("ID " + ID, textXOffset, panelLoc += panelFont);

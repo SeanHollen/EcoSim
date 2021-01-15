@@ -43,29 +43,18 @@ class Animal extends Organism {
   
   public void drawOrganism() {
     if (shell != 0) {
-      stroke(shell * SHELL_STROKE);
+      stroke(1);
+      strokeWeight(shell * SHELL_STROKE);
     } else {
       noStroke(); 
     }
+    super.genome.setFillToColor(); 
     drawBody();
-    drawLegs(); 
     drawHead(); 
-  }
-  
-  public void drawAndDisplayInfo() {
-    super.drawAndDisplayInfo();
-    text("BODY SIZE " + round(bodySize), textXOffset, panelLoc += panelFont);
-    text("GRAZING " + round(grazing), textXOffset, panelLoc += panelFont);
-    text("JAWS " + round(jaws), textXOffset, panelLoc += panelFont);
-    text("LEGS " + round(legs), textXOffset, panelLoc += panelFont);
-    stroke(2); 
-    stroke(25, 0, 255); 
-    drawBody();
-    drawHead();
+    drawLegs(); 
   }
   
   private void drawBody() {
-    super.genome.setFillToColor(); 
     circle(super.location.getX(), super.location.getY(), this.width());
   }
   
@@ -82,10 +71,14 @@ class Animal extends Organism {
   }
   
   private void drawLegs() {
-    Location feetLoc = this.location.getLocOffBy(- this.width() / 2, super.orientationInRadians);
-    float open = super.orientationInRadians-HALF_PI; 
-    float close = super.orientationInRadians+HALF_PI;
-    arc(feetLoc.getX(), feetLoc.getY(), legs*LEGS_SIZE_VIEW, legs*LEGS_SIZE_VIEW, open, close, CHORD);
+    if (legs == 0) return; 
+    super.genome.setStrokeToColor(); 
+    strokeWeight(legs * LEGS_WIDTH_VIEW); 
+    float offBy = this.width() * (0.5 + LEGS_LENGTH_VIEW_X); 
+    Location newLoc = this.location.getLocOffBy(offBy, super.orientationInRadians + PI + QUARTER_PI); 
+    line(location.getX(), location.getY(), newLoc.getX(), newLoc.getY());
+    newLoc = this.location.getLocOffBy(offBy, super.orientationInRadians - (PI + QUARTER_PI)); 
+    line(location.getX(), location.getY(), newLoc.getX(), newLoc.getY());
   }
   
   private void drawCarnivoreHead(Location headLoc) {
@@ -98,23 +91,40 @@ class Animal extends Organism {
     circle(headLoc.getX(), headLoc.getY(), (this.grazing * HEAD_SIZE_VIEW));
   }
   
+  public void drawAndDisplayInfo() {
+    super.drawAndDisplayInfo();
+    text("BODY SIZE " + round(bodySize), textXOffset, panelLoc += panelFont);
+    text("GRAZING " + round(grazing), textXOffset, panelLoc += panelFont);
+    text("JAWS " + round(jaws), textXOffset, panelLoc += panelFont);
+    text("LEGS " + round(legs), textXOffset, panelLoc += panelFont);
+    stroke(2); 
+    stroke(25, 0, 255); 
+    drawBody();
+    drawHead();
+  }
+  
   protected int width() {
     return (int) (this.bodySize * BODY_SIZE_VIEW); 
   }
   
   public void actOnOrganism(Organism other) {
     if (!inGracePeriod(other)) {
-      int toGrowBy = 0;
+      eatOtherIfPossible(other);
+      setRandomOrientation(); 
+    } 
+    otherOrganismsConsumedTimes.put(other.ID, frameCount); 
+  }
+  
+  private void eatOtherIfPossible(Organism other) {
+    int toGrowBy = 0;
       toGrowBy += other.removeFromCanopy(this.grazing); 
       if (other.canBePredatedBy(this)) {
-        toGrowBy += other.removeFromBody(this.jaws); 
+        float canEat = max(this.jaws - (other.shell * SHELL_PROTECTION), 0); 
+        toGrowBy += other.removeFromBody(canEat); 
       }
       if (toGrowBy > 0) {
         addEnergy(toGrowBy);
       }
-      setRandomOrientation(); 
-    } 
-    otherOrganismsConsumedTimes.put(other.ID, frameCount); 
   }
   
   public boolean inGracePeriod(Organism other) {

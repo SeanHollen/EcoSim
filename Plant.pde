@@ -53,8 +53,9 @@ class Plant extends Organism {
   }
   
   public void drawOrganism() {
-    if (shell != 0) {
-      stroke(shell * SHELL_STROKE);
+    if (shell > 0) {
+      stroke(1);
+      strokeWeight(shell * SHELL_STROKE);
     } else {
       noStroke(); 
     }

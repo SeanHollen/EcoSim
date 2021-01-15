@@ -26,6 +26,10 @@ class Genome {
     fill(asColors[0], asColors[1], asColors[2]); 
   }
   
+  public void setStrokeToColor() {
+    stroke(asColors[0], asColors[1], asColors[2]); 
+  }
+  
   private Action getNextAction() {
     if (eventsIndex >= lifeEvents.size()) {
       eventsIndex %= lifeEvents.size(); 

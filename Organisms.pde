@@ -62,10 +62,10 @@ void addExperimentalOrganisms() {
     organisms.add(newAnimal);
   }
   actions = new ArrayList<Action>(); 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 5; i++) {
     actions.add(new GrowBody()); 
+    actions.add(new GrowJaws()); 
   }
-  actions.add(new GrowJaws()); 
   actions.add(new GrowLegs()); 
   actions.add(new Reproduce(40, 0, 500)); 
   for (int i = 0; i < 20; i++) {
