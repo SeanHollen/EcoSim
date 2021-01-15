@@ -5,17 +5,18 @@ class Plant extends Organism {
   public float canopy; 
   
   public Plant(Genome genome, Location location, float energy) {
-    this(genome, location, energy, 0, 2, 0); 
+    super(genome, location, energy, 0); 
+    initializeTraits(); 
   }
   
   public Plant(Genome genome, Location location, float energy, int generation) {
-    this(genome, location, energy, generation, 2, 0); 
+    super(genome, location, energy, generation); 
+    initializeTraits(); 
   }
   
-  public Plant(Genome genome, Location location, float energy, int generation, float trunk, float canopy) {
-    super(genome, location, energy, generation);
-    this.trunk = trunk;
-    this.canopy = canopy; 
+  void initializeTraits() {
+    this.trunk = 2; 
+    this.canopy = 0; 
   }
   
   protected Organism child(Genome genome, Location newLoc, float startingEnergy, int generation) {
@@ -46,10 +47,17 @@ class Plant extends Organism {
     trunk -= amount; 
     float maxCanopy = min(canopy, trunk * CANOPY_MAX_SIZE_X); 
     canopy = maxCanopy; 
+    float maxShell = min(shell, trunk * SHELL_MAX_SIZE_X); 
+    shell = maxShell; 
     if (canopy < trunk) canopy++; trunk--; // keep this line? 
   }
   
   public void drawOrganism() {
+    if (shell != 0) {
+      stroke(shell * SHELL_STROKE);
+    } else {
+      noStroke(); 
+    }
     drawTrunk();
     drawCanopy();
   }
@@ -93,6 +101,7 @@ class Plant extends Organism {
   protected float removeFromBody(float toRemove) { return 0; }; 
   
   public void move() {}; 
+  
   public String getType() {
     return "PLANT"; 
   }

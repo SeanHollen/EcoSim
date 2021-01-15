@@ -48,18 +48,44 @@ void addStartingCarnivores() {
   }
 }
 
+void addExperimentalOrganisms() {
+  ArrayList<Action> actions = new ArrayList<Action>(); 
+  for (int i = 0; i < 4; i++) {
+    actions.add(new GrowBody()); 
+  }
+  actions.add(new GrowGrazing()); 
+  actions.add(new GrowShell()); 
+  actions.add(new Reproduce(40, 0, 500)); 
+  for (int i = 0; i < 20; i++) {
+    Genome genome = new Genome(actions, new int[]{219, 197, 156});
+    Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
+    organisms.add(newAnimal);
+  }
+  actions = new ArrayList<Action>(); 
+  for (int i = 0; i < 4; i++) {
+    actions.add(new GrowBody()); 
+  }
+  actions.add(new GrowJaws()); 
+  actions.add(new GrowLegs()); 
+  actions.add(new Reproduce(40, 0, 500)); 
+  for (int i = 0; i < 20; i++) {
+    Genome genome = new Genome(actions, new int[]{217, 118, 85});
+    Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
+    organisms.add(newAnimal);
+  }
+}
+
 void selectOrganism() {
   selected = null; 
   Location loc = new Location(mouseX, mouseY); 
   ensureSorted(); 
   int i = 0; 
   while (i < organisms.size() && mouseX < organisms.get(i).location.getX()) i++; 
-  while (i < organisms.size()) {
+  for (; i < organisms.size(); i++) {
     if (organisms.get(i).intersects(loc)) {
       selected = organisms.get(i); 
       return;
     }
-    i++;
   }
 }
 
@@ -83,7 +109,7 @@ void drawNumOrganisms() {
   text(organisms.size(), 10, 30);
 }
 
-void ageOrganisms() {
+void incrementAges() {
   for (Organism organism : organisms) {
     organism.ageUp(); 
   }
@@ -185,7 +211,7 @@ void homeostasis() {
   }
 }
 
-void killOrganisms() {
+void removeDead() {
   for (int i = 0; i < organisms.size(); i++) {
     if (organisms.get(i).isDead()) {
       organisms.remove(i); 

@@ -24,7 +24,11 @@ abstract class Organism implements Comparable<Organism> {
     this.genome = genome;
     this.generation = generation; 
     setRandomOrientation(); 
-    age = 1; 
+    initializeTraits(); 
+  }
+  
+  private void initializeTraits() {
+    age = 0; 
     shell = 0; 
     spikes = 0;  
   }
@@ -113,14 +117,14 @@ abstract class Organism implements Comparable<Organism> {
     panelLoc = panelTop;
     textSize(10);
     fill(0,0,0);
-    text("ID " + ID, textXOffset, panelLoc += panelFont);
-    text("GENERATION " + generation, textXOffset, panelLoc += panelFont);
     text("TYPE " + getType(), textXOffset, panelLoc += panelFont);
     text("GENOME " + genome.asString(), textXOffset, panelLoc += panelFont);
+    text("ID " + ID, textXOffset, panelLoc += panelFont);
+    text("GENERATION " + generation, textXOffset, panelLoc += panelFont);
     text("AGE " + age, textXOffset, panelLoc += panelFont);
+    text("IS DEAD? " + isDead(), textXOffset, panelLoc += panelFont);
     text("ENERGY " + round(energy), textXOffset, panelLoc += panelFont);
     text("SHELL " + round(shell), textXOffset, panelLoc += panelFont);
-    text("IS DEAD? " + isDead(), textXOffset, panelLoc += panelFont);
   }
   
   protected abstract int width();

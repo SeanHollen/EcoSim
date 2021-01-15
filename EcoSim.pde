@@ -7,8 +7,9 @@ void settings() {
 void setup() {
   organisms = new ArrayList<Organism>();
   addStartingPlants(); 
-  addStartingHerbavores();
-  addStartingCarnivores();
+  //addStartingHerbavores();
+  //addStartingCarnivores();
+  addExperimentalOrganisms(); 
 }
 
 void draw() {
@@ -18,23 +19,22 @@ void draw() {
   drawNumOrganisms(); 
   drawSelected(); 
   if (!isPaused) {
-    ageOrganisms(); 
+    incrementAges(); 
     moveAnimals();
     collisionOperations(); 
     feedPlants();
     homeostasis();
-    killOrganisms(); 
+    removeDead(); 
   } 
   pausedText(); 
 }
 
 void mouseClicked() {
-  if (isPaused) {
-    isPaused = false; 
-  } else if (mouseX < 100 && mouseY < 100) {
-    isPaused = true; 
+  if (mouseX < 100 && mouseY < 100) {
+    isPaused = !isPaused; 
+  } else {
+    selectOrganism(); 
   }
-  selectOrganism(); 
 }
 
 void pausedText() {
@@ -59,6 +59,8 @@ final float HEAD_SIZE_VIEW = 1;
 final float JAWS_SIZE_VIEW = 1;
 final float TRUNK_SIZE_VIEW = 1;
 final float CANOPY_SIZE_VIEW = 1;
+final float LEGS_SIZE_VIEW = 5;
+final float SHELL_STROKE = 0.05; 
 final boolean SHOW_LIGHT_RAYS = false; 
 
 // === Starting Situation === //
@@ -73,6 +75,7 @@ final int START_GENETIC_AFFINITY = 5;
 
 // === Movement === //
 final float SPEED_MULTIPLE = 2; 
+final float LEGS_SPEED = 2;
 final int GRACE_PERIOD = 10; 
 
 // === Energy and Costs === //

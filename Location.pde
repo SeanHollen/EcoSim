@@ -22,19 +22,11 @@ class Location implements Comparable<Location> {
   }
   
   public void moveBy(float step, float radians) {
+    assert (!Float.isNaN(step));
+    assert (!Float.isNaN(radians));
     x += step * Math.cos(radians);
     y += step * Math.sin(radians);
     rollOver(); 
-  }
-  
-  public Location getLocOffBy(float amountOff, float radians) {
-    float newX = this.x + amountOff * cos(radians); 
-    float newY = this.y + amountOff * sin(radians); 
-    return new Location(newX, newY); 
-  }
-  
-  public Location clone() {
-    return new Location(x, y);
   }
   
   private void rollOver() {
@@ -48,6 +40,16 @@ class Location implements Comparable<Location> {
     } else if (y < 0) {
       y = BOARD_Y - abs(y); 
     }
+  }
+  
+  public Location getLocOffBy(float amountOff, float radians) {
+    float newX = this.x + amountOff * cos(radians); 
+    float newY = this.y + amountOff * sin(radians); 
+    return new Location(newX, newY); 
+  }
+  
+  public Location clone() {
+    return new Location(x, y);
   }
   
   public boolean intersects(Location other, float minCloseness) {
@@ -65,5 +67,7 @@ class Location implements Comparable<Location> {
       return 0; 
     }
   }
+  
+  public String toString() { return x + " " + y; }
   
 }

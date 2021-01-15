@@ -126,7 +126,7 @@ class GrowGrazing implements Action {
 class GrowLegs implements Action {
   
   public void act(Animal animal, float amount) {
-    if (animal.legs * LEGS_MAX_SIZE_X >= animal.legs + amount) {
+    if (animal.bodySize * LEGS_MAX_SIZE_X >= animal.legs + amount) {
       animal.legs += amount; 
     }
   }
@@ -141,16 +141,14 @@ class GrowLegs implements Action {
 class GrowShell implements Action {
   
   public void act(Animal animal, float amount) {
-    growShell(animal, amount);
+    if (animal.bodySize * SHELL_MAX_SIZE_X >= animal.shell + amount) {
+      animal.shell += amount; 
+    }
   }
   
   public void act(Plant plant, float amount) {
-    growShell(plant, amount); 
-  }
-  
-  private void growShell(Organism org, float amount) {
-    if (org.shell * SHELL_MAX_SIZE_X >= org.shell + amount) {
-      org.shell += amount; 
+    if (plant.trunk * SHELL_MAX_SIZE_X >= plant.shell + amount) {
+      plant.shell += amount; 
     }
   }
   

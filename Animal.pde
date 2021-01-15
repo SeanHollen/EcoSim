@@ -6,26 +6,26 @@ class Animal extends Organism {
   private HashMap<Integer, Integer> otherOrganismsConsumedTimes;
   
   public Animal(Genome genome, Location location, float energy) {
-    this(genome, location, energy, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0); 
+    this(genome, location, energy, 0); 
   }
   
-  public Animal(Genome genome, Location location, float energy, int generation) {
-    this(genome, location, energy, generation, 2, 0, 0, 0, 0, 0, 0, 0, 0); 
-  }
-  
-  private Animal(Genome genome, Location location, float energy, int generation, float bodySize, float grazing, 
-  float jaws, float legs, float fins, float climbing, float burrowing, float fur, float longNeck) {
+  private Animal(Genome genome, Location location, float energy, int generation) {
     super(genome, location, energy, generation);
-    this.bodySize = bodySize; 
-    this.grazing = grazing; 
-    this.jaws = jaws; 
-    this.legs = legs; 
-    this.fins = fins; 
-    this.climbing = climbing; 
-    this.burrowing = burrowing; 
-    this.fur = fur; 
-    this.longNeck = longNeck; 
+    initializeTraits(); 
     otherOrganismsConsumedTimes = new HashMap<Integer, Integer>(); 
+  }
+  
+  private void initializeTraits() {
+    this.bodySize = 2; 
+    this.grazing = 0; 
+    this.jaws = 0; 
+    this.legs = 0; 
+    this.fins = 0; 
+    this.climbing = 0; 
+    this.burrowing = 0; 
+    this.fur = 0; 
+    this.longNeck = 0; 
+    
   }
   
   protected Organism child(Genome genome, Location loc, float startingEnergy, int generation) {
@@ -38,11 +38,17 @@ class Animal extends Organism {
   }
   
   private float getStep() {
-    return SPEED_MULTIPLE; 
+    return SPEED_MULTIPLE + (LEGS_SPEED * legs / (bodySize + 0.1)); 
   }
   
   public void drawOrganism() {
+    if (shell != 0) {
+      stroke(shell * SHELL_STROKE);
+    } else {
+      noStroke(); 
+    }
     drawBody();
+    drawLegs(); 
     drawHead(); 
   }
   
@@ -59,7 +65,6 @@ class Animal extends Organism {
   }
   
   private void drawBody() {
-    //fill(219, 197, 156); 
     super.genome.setFillToColor(); 
     circle(super.location.getX(), super.location.getY(), this.width());
   }
@@ -74,6 +79,13 @@ class Animal extends Organism {
       drawHerbavoreHead(headLoc);
       drawCarnivoreHead(headLoc); 
     }
+  }
+  
+  private void drawLegs() {
+    Location feetLoc = this.location.getLocOffBy(- this.width() / 2, super.orientationInRadians);
+    float open = super.orientationInRadians-HALF_PI; 
+    float close = super.orientationInRadians+HALF_PI;
+    arc(feetLoc.getX(), feetLoc.getY(), legs*LEGS_SIZE_VIEW, legs*LEGS_SIZE_VIEW, open, close, CHORD);
   }
   
   private void drawCarnivoreHead(Location headLoc) {
@@ -123,12 +135,17 @@ class Animal extends Organism {
   protected void takeAction(Action action, float toGrowWith) { action.act(this, toGrowWith); }
   
   protected float removeFromBody(float toRemove) {
+    if (toRemove == 0) return 0; 
     toRemove = min(toRemove, bodySize); 
     bodySize -= toRemove; 
     float maxGrazing = min(grazing, bodySize * GRAZING_MAX_SIZE_X); 
     grazing = maxGrazing; 
     float maxJaws = min(jaws, bodySize * JAWS_MAX_SIZE_X); 
     jaws = maxJaws; 
+    float maxShell = min(shell, bodySize * SHELL_MAX_SIZE_X); 
+    shell = maxShell; 
+    float maxLegs = min(legs, bodySize * LEGS_MAX_SIZE_X); 
+    legs = maxLegs; 
     return toRemove; 
   }
   
