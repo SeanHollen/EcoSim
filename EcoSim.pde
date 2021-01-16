@@ -7,9 +7,8 @@ void settings() {
 void setup() {
   organisms = new ArrayList<Organism>();
   addStartingPlants(); 
-  //addStartingHerbavores();
-  //addStartingCarnivores();
-  addExperimentalOrganisms(); 
+  addStartingHerbavores();
+  addStartingCarnivores();
 }
 
 void draw() {
@@ -72,11 +71,10 @@ final int START_CARNIVORES = 20;
 final float START_ANIMAL_ENERGY = 40; 
 final float START_GRAZE = 1.5; 
 final float START_JAWS = 5; 
-final int START_GENETIC_AFFINITY = 5; 
 
 // === Movement === //
-final float NOLEG_SPEED = 0; // was: 2
-final float LEGS_SPEED = 12; // was: 2
+final float NOLEG_SPEED = 0; 
+final float LEGS_SPEED = 12; 
 final int GRACE_PERIOD = 10; 
 
 // === Energy and Costs === //
@@ -94,11 +92,17 @@ final float SHELL_PROTECTION = 1;
 final float CANOPY_MAX_SIZE_X = 2; 
 final float GRAZING_MAX_SIZE_X = 0.5;
 final float JAWS_MAX_SIZE_X = 0.75;
-final float LEGS_MAX_SIZE_X = 0.25;
+final float LEGS_MAX_SIZE_X = 0.3;
 final float SHELL_MAX_SIZE_X = 0.2; 
 
 // === PANEL === // 
 final float textXOffset = 13; 
-final float panelTop =  BOARD_Y - 200;
+final float panelTop =  BOARD_Y - 210;
 float panelLoc;
 float panelFont = 15;
+float INDICATOR_TRIANGLE_SIZE = 16;
+
+// === GENETICS === // 
+final int START_GENETIC_AFFINITY = 0; // 20
+final float MUTATION_RANGE_PORTION = 0.25; 
+final int COLOR_MUTATION_RANGE = 20;

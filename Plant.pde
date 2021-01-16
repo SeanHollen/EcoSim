@@ -20,7 +20,7 @@ class Plant extends Organism {
   }
   
   protected Organism child(Genome genome, Location newLoc, float startingEnergy, int generation) {
-     return new Plant(genome, newLoc, startingEnergy, generation);
+    return new Plant(genome, newLoc, startingEnergy, generation);
   }
   
   public void obsorbSunlight() {
@@ -35,21 +35,20 @@ class Plant extends Organism {
     super.energy += energy; 
   }
   
-  protected float sizeCost() { return trunk * trunk * trunk * PI * COST_PER_TRUNK; }
+  protected float sizeCost() { return trunk * trunk * trunk * PI * COST_PER_TRUNK; } 
   
-  protected void reduceBaseBy(float amount) { reduceTrunkBy(amount); }
+  protected void reduceBaseBy(float amount) { 
+    trunk -= amount;
+    if (canopy < trunk) canopy++; trunk--; // keep this line?
+  }
   
   protected float base() { return this.trunk; }
   
   protected void takeAction(Action action, float toGrowWith) { action.act(this, toGrowWith); }
   
-  private void reduceTrunkBy(float amount) {
-    trunk -= amount; 
-    float maxCanopy = min(canopy, trunk * CANOPY_MAX_SIZE_X); 
-    canopy = maxCanopy; 
-    float maxShell = min(shell, trunk * SHELL_MAX_SIZE_X); 
-    shell = maxShell; 
-    if (canopy < trunk) canopy++; trunk--; // keep this line? 
+  protected void enforceConstraints() {
+    canopy = min(canopy, trunk * CANOPY_MAX_SIZE_X); 
+    shell = min(shell, trunk * SHELL_MAX_SIZE_X); 
   }
   
   public void drawOrganism() {
@@ -63,14 +62,10 @@ class Plant extends Organism {
     drawCanopy();
   }
   
-  public void drawAndDisplayInfo() {
-    super.drawAndDisplayInfo();
+  public void displayInfo() {
+    super.displayInfo();
     text("TRUNK " + round(trunk), textXOffset, panelLoc += panelFont);
     text("CANOPY " + round(canopy), textXOffset, panelLoc += panelFont);
-    stroke(2); 
-    stroke(25, 0, 255); 
-    drawTrunk();
-    drawCanopy();
   }
   
   private void drawTrunk() {

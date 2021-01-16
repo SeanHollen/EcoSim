@@ -2,7 +2,7 @@
 class Animal extends Organism {
   
   public float bodySize; 
-  public float grazing, jaws, legs, fins, climbing, burrowing, fur, longNeck; 
+  public float grazing, jaws, legs, fins, climbing, burrowing, fur, longNeck; // last 5 not yet used
   private HashMap<Integer, Integer> otherOrganismsConsumedTimes;
   
   public Animal(Genome genome, Location location, float energy) {
@@ -25,7 +25,6 @@ class Animal extends Organism {
     this.burrowing = 0; 
     this.fur = 0; 
     this.longNeck = 0; 
-    
   }
   
   protected Organism child(Genome genome, Location loc, float startingEnergy, int generation) {
@@ -95,16 +94,12 @@ class Animal extends Organism {
     circle(headLoc.getX(), headLoc.getY(), (this.grazing * HEAD_SIZE_VIEW));
   }
   
-  public void drawAndDisplayInfo() {
-    super.drawAndDisplayInfo();
+  public void displayInfo() {
+    super.displayInfo();
     text("BODY SIZE " + round(bodySize), textXOffset, panelLoc += panelFont);
     text("GRAZING " + round(grazing), textXOffset, panelLoc += panelFont);
     text("JAWS " + round(jaws), textXOffset, panelLoc += panelFont);
     text("LEGS " + round(legs), textXOffset, panelLoc += panelFont);
-    stroke(2); 
-    stroke(25, 0, 255); 
-    drawBody();
-    drawHead();
   }
   
   protected int width() {
@@ -152,15 +147,14 @@ class Animal extends Organism {
     if (toRemove == 0) return 0; 
     toRemove = min(toRemove, bodySize); 
     bodySize -= toRemove; 
-    float maxGrazing = min(grazing, bodySize * GRAZING_MAX_SIZE_X); 
-    grazing = maxGrazing; 
-    float maxJaws = min(jaws, bodySize * JAWS_MAX_SIZE_X); 
-    jaws = maxJaws; 
-    float maxShell = min(shell, bodySize * SHELL_MAX_SIZE_X); 
-    shell = maxShell; 
-    float maxLegs = min(legs, bodySize * LEGS_MAX_SIZE_X); 
-    legs = maxLegs; 
     return toRemove; 
+  }
+  
+  protected void enforceConstraints() {
+    grazing = min(grazing, bodySize * GRAZING_MAX_SIZE_X); 
+    jaws = min(jaws, bodySize * JAWS_MAX_SIZE_X); 
+    shell = min(shell, bodySize * SHELL_MAX_SIZE_X); 
+    legs = min(legs, bodySize * LEGS_MAX_SIZE_X); 
   }
   
   protected float removeFromCanopy(float toRemove) { return 0; }; 

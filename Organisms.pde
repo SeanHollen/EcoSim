@@ -11,8 +11,16 @@ void addStartingPlants() {
     actions.add(new GrowCanopy());
   }
   actions.add(new Reproduce(40, 100, 500));
+  ArrayList<Action> actionsWithShell = new ArrayList<Action>(actions);
+  actionsWithShell.add(new GrowShell()); 
   for (int i = 0; i < START_PLANTS; i++) {
-    Genome genome = new Genome(actions, new int[]{66, 245, 114});
+    Genome genome;
+    if (i % 5 == 0) {
+      genome = new Genome(actionsWithShell, new int[]{66, 245, 114});
+    } else {
+      genome = new Genome(actions, new int[]{66, 245, 114});
+    }
+    //genome = new Genome(actions, new int[]{66, 245, 114});
     Plant newPlant = new Plant(genome, new Location(), PLANT_START_ENERGY);
     organisms.add(newPlant);
   }
@@ -24,51 +32,24 @@ void addStartingHerbavores() {
     actions.add(new GrowBody()); 
   }
   actions.add(new GrowGrazing()); 
-  actions.add(new Reproduce(40, 0, 500)); 
-  for (int i = 0; i < START_HERBAVORES; i++) {
-    Genome genome = new Genome(actions, new int[]{219, 197, 156});
-    Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
-    newAnimal.grazing = START_GRAZE; 
-    organisms.add(newAnimal);
-  }
-}
-
-void addStartingCarnivores() {
-  ArrayList<Action> actions = new ArrayList<Action>(); 
-  for (int i = 0; i < 6; i++) {
-    actions.add(new GrowBody()); 
-  }
-  actions.add(new GrowJaws());
-  actions.add(new Reproduce(30, 100, 500)); 
-  for (int i = 0; i < START_CARNIVORES; i++) {
-    Genome genome = new Genome(actions, new int[]{217, 118, 85});
-    Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
-    newAnimal.jaws = START_JAWS; 
-    organisms.add(newAnimal);
-  }
-}
-
-void addExperimentalOrganisms() {
-  ArrayList<Action> actions = new ArrayList<Action>(); 
-  for (int i = 0; i < 4; i++) {
-    actions.add(new GrowBody()); 
-  }
-  actions.add(new GrowGrazing()); 
   actions.add(new GrowShell()); 
-  actions.add(new Reproduce(60, 0, 500)); 
+  actions.add(new Reproduce(60, 10, 500)); 
   actions.add(new GrowLegs()); 
   for (int i = 0; i < 20; i++) {
     Genome genome = new Genome(actions, new int[]{219, 197, 156});
     Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
     organisms.add(newAnimal);
   }
-  actions = new ArrayList<Action>(); 
+}
+
+void addStartingCarnivores() {
+  ArrayList<Action> actions = new ArrayList<Action>(); 
   for (int i = 0; i < 5; i++) {
     actions.add(new GrowBody()); 
     actions.add(new GrowJaws()); 
   }
   actions.add(new GrowLegs()); 
-  actions.add(new Reproduce(40, 0, 500)); 
+  actions.add(new Reproduce(40, 60, 500)); 
   for (int i = 0; i < 20; i++) {
     Genome genome = new Genome(actions, new int[]{217, 118, 85});
     Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
@@ -100,7 +81,7 @@ void drawOrganisms() {
 
 void drawSelected() {
   if (selected != null) {
-    selected.drawAndDisplayInfo();
+    selected.displayInfo();
   } 
 }
 

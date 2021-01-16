@@ -49,7 +49,15 @@ class Reproduce implements Action {
   
   public char toChar() { return 'R'; }
   
-  Action mutation() { return this; }
+  Action mutation() { 
+    float full = MUTATION_RANGE_PORTION;
+    float half = MUTATION_RANGE_PORTION / 2;
+    float newChildSize = (random(full) - half) * childSize + childSize;
+    newChildSize = max(0, newChildSize); 
+    float newSeedDispersal = (random(full) - half) * seedDispersal + seedDispersal;
+    int newMinAge = (int) ((random(full) - half) * minAge + minAge);
+    return new Reproduce(newChildSize, newSeedDispersal, newMinAge); 
+  }
 }
 
 class GrowBody implements Action {
@@ -68,9 +76,7 @@ class GrowBody implements Action {
 class GrowCanopy implements Action {
   
   public void act(Plant plant, float amount) {
-    if (plant.trunk * CANOPY_MAX_SIZE_X >= plant.canopy + amount) {
-      plant.canopy += amount; 
-    } 
+    plant.canopy += amount;
   }
   
   public void act(Animal notapplicable, float amount){}
@@ -96,9 +102,7 @@ class GrowTrunk implements Action {
 class GrowJaws implements Action {
   
   public void act(Animal animal, float amount) {
-    if (animal.bodySize * JAWS_MAX_SIZE_X >= animal.jaws + amount) {
-      animal.jaws += amount; 
-    }
+    animal.jaws += amount; 
   }
   
   public void act(Plant notapplicable, float amount){}
@@ -111,9 +115,7 @@ class GrowJaws implements Action {
 class GrowGrazing implements Action {
   
   public void act(Animal animal, float amount) {
-    if (animal.bodySize * GRAZING_MAX_SIZE_X >= animal.grazing + amount) {
-      animal.grazing += amount; 
-    }
+    animal.grazing += amount; 
   }
   
   public void act(Plant notapplicable, float amount){}
@@ -126,9 +128,7 @@ class GrowGrazing implements Action {
 class GrowLegs implements Action {
   
   public void act(Animal animal, float amount) {
-    if (animal.bodySize * LEGS_MAX_SIZE_X >= animal.legs + amount) {
-      animal.legs += amount; 
-    }
+    animal.legs += amount; 
   }
   
   public void act(Plant notapplicable, float amount){}
@@ -141,15 +141,11 @@ class GrowLegs implements Action {
 class GrowShell implements Action {
   
   public void act(Animal animal, float amount) {
-    if (animal.bodySize * SHELL_MAX_SIZE_X >= animal.shell + amount) {
-      animal.shell += amount; 
-    }
+    animal.shell += amount; 
   }
   
   public void act(Plant plant, float amount) {
-    if (plant.trunk * SHELL_MAX_SIZE_X >= plant.shell + amount) {
-      plant.shell += amount; 
-    }
+    plant.shell += amount; 
   }
   
   public char toChar() { return 'S'; }

@@ -39,7 +39,7 @@ abstract class Organism implements Comparable<Organism> {
     }
     Location newLoc = this.location.getLocOffBy(seedDispersal, random(2 * PI));
     this.energy -= energyRequired; 
-    return child(this.genome, newLoc, energyRequired, generation + 1);
+    return child(this.genome.getMutation(), newLoc, energyRequired, generation + 1);
   }
   
   protected abstract Organism child(Genome genome, Location newLoc, float startingEnergy, int generation); 
@@ -99,7 +99,10 @@ abstract class Organism implements Comparable<Organism> {
       takeAction(genome.getNextAction(), toGrowWith); 
       this.energy -= toGrowWith;
     }
+    enforceConstraints(); 
   }
+  
+  protected abstract void enforceConstraints(); 
   
   private float ageCost() {
     return AGE_COST_PER1K_ONGOING * (float) age / 1000.0;
@@ -117,13 +120,22 @@ abstract class Organism implements Comparable<Organism> {
   
   public abstract void drawOrganism();
   
-  public void drawAndDisplayInfo() {
+  public void displayInfo() {
+    color(0); 
+    float half = INDICATOR_TRIANGLE_SIZE / 2;
+    float full = INDICATOR_TRIANGLE_SIZE; 
+    triangle(
+    location.getX(), location.getY(), 
+    location.getX() - half, location.getY() - full, 
+    location.getX() + half, location.getY() - full
+    ); 
     panelLoc = panelTop;
     textSize(10);
     fill(0,0,0);
     strokeWeight(3);
     text("TYPE " + getType(), textXOffset, panelLoc += panelFont);
     text("GENOME " + genome.asString(), textXOffset, panelLoc += panelFont);
+    text("COLOR " + genome.writeColors(), textXOffset, panelLoc += panelFont);
     text("ID " + ID, textXOffset, panelLoc += panelFont);
     text("GENERATION " + generation, textXOffset, panelLoc += panelFont);
     text("AGE " + age, textXOffset, panelLoc += panelFont);
