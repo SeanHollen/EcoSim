@@ -38,20 +38,24 @@ class Animal extends Organism {
   }
   
   private float getStep() {
-    return SPEED_MULTIPLE + (LEGS_SPEED * legs / (bodySize + 0.1)); 
+    return NOLEG_SPEED + (LEGS_SPEED * legs / (bodySize + 0.1)); 
   }
   
   public void drawOrganism() {
+    drawLegs(); 
+    setStroke(); 
+    super.genome.setFillToColor(); 
+    drawBody();
+    drawHead(); 
+  }
+  
+  private void setStroke() {
     if (shell != 0) {
       stroke(1);
       strokeWeight(shell * SHELL_STROKE);
     } else {
       noStroke(); 
     }
-    super.genome.setFillToColor(); 
-    drawBody();
-    drawHead(); 
-    drawLegs(); 
   }
   
   private void drawBody() {
@@ -107,7 +111,7 @@ class Animal extends Organism {
     return (int) (this.bodySize * BODY_SIZE_VIEW); 
   }
   
-  public void actOnOrganism(Organism other) {
+  protected void actOnOrganism(Organism other) {
     if (!inGracePeriod(other)) {
       eatOtherIfPossible(other);
       setRandomOrientation(); 
@@ -127,7 +131,7 @@ class Animal extends Organism {
       }
   }
   
-  public boolean inGracePeriod(Organism other) {
+  private boolean inGracePeriod(Organism other) {
     return otherOrganismsConsumedTimes.containsKey(other.ID) 
       && frameCount - otherOrganismsConsumedTimes.get(other.ID) <= GRACE_PERIOD; 
   }
@@ -159,9 +163,9 @@ class Animal extends Organism {
     return toRemove; 
   }
   
-  public float removeFromCanopy(float toRemove) { return 0; }; 
+  protected float removeFromCanopy(float toRemove) { return 0; }; 
   
-  public boolean canBePredatedBy(Animal other) {
+  protected boolean canBePredatedBy(Animal other) {
     return this.jaws < other.jaws && !this.sameSpecies(other);
   }
   

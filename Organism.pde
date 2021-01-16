@@ -88,9 +88,9 @@ abstract class Organism implements Comparable<Organism> {
     return this.age > age; 
   }
     
-  public void homeostasis(float toDrain) {
-    this.energy -= toDrain; 
-    this.energy -= (toDrain * sizeCost());
+  public void homeostasis() {
+    this.energy -= ageCost(); 
+    this.energy -= sizeCost();
     if (this.energy < 0) {
       reduceBaseBy(abs(this.energy)); 
       this.energy = 0;
@@ -99,6 +99,10 @@ abstract class Organism implements Comparable<Organism> {
       takeAction(genome.getNextAction(), toGrowWith); 
       this.energy -= toGrowWith;
     }
+  }
+  
+  private float ageCost() {
+    return AGE_COST_PER1K_ONGOING * (float) age / 1000.0;
   }
     
   protected abstract float sizeCost(); 
@@ -130,13 +134,13 @@ abstract class Organism implements Comparable<Organism> {
   
   protected abstract int width();
   
-  public abstract void actOnOrganism(Organism other);
+  protected abstract void actOnOrganism(Organism other);
   
   protected abstract float removeFromBody(float toRemove);
   
   protected abstract float removeFromCanopy(float toRemove);  
     
-  public abstract boolean canBePredatedBy(Animal other);
+  protected abstract boolean canBePredatedBy(Animal other);
   
   public abstract void move(); 
   

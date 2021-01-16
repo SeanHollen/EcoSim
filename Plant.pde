@@ -87,15 +87,15 @@ class Plant extends Organism {
     return (int) (canopy * BODY_SIZE_VIEW);
   }
   
-  public void actOnOrganism(Organism other) {}
+  protected void actOnOrganism(Organism other) {}
   
-  public float removeFromCanopy(float toRemove) { 
+  protected float removeFromCanopy(float toRemove) { 
     toRemove = min(toRemove, canopy); 
     canopy -= toRemove; 
     return toRemove; 
   }
   
-  public boolean canBePredatedBy(Animal other) {
+  protected boolean canBePredatedBy(Animal other) {
     return false; 
   }
   

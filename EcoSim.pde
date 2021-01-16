@@ -75,18 +75,18 @@ final float START_JAWS = 5;
 final int START_GENETIC_AFFINITY = 5; 
 
 // === Movement === //
-final float SPEED_MULTIPLE = 2; 
-final float LEGS_SPEED = 2;
+final float NOLEG_SPEED = 0; // was: 2
+final float LEGS_SPEED = 12; // was: 2
 final int GRACE_PERIOD = 10; 
 
 // === Energy and Costs === //
-final float INFANCY_LENGTH = 20; 
+final float COST_PER_BODY_SIZE = 0.00003; 
+final float COST_PER_TRUNK = 0.00003; 
+final float AGE_COST_PER1K_ONGOING = 0.0006; 
 final float GROWTH_SPEED = 0.5;
 final float ENERGY_PER_RAY = 20; 
 final float RAYS_PER_10K_PIXELS = 1; 
-final float ENERGY_COST = 0.006; 
-final float COST_PER_BODY_SIZE = 0.005; 
-final float COST_PER_TRUNK = 0.005; 
+final float INFANCY_LENGTH = 20; 
 final float SEED_DISPERSAL_COST = 0; 
 final float SHELL_PROTECTION = 1; 
 
@@ -94,7 +94,7 @@ final float SHELL_PROTECTION = 1;
 final float CANOPY_MAX_SIZE_X = 2; 
 final float GRAZING_MAX_SIZE_X = 0.5;
 final float JAWS_MAX_SIZE_X = 0.75;
-final float LEGS_MAX_SIZE_X = 0.5; 
+final float LEGS_MAX_SIZE_X = 0.25;
 final float SHELL_MAX_SIZE_X = 0.2; 
 
 // === PANEL === // 

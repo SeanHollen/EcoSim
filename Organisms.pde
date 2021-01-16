@@ -55,7 +55,8 @@ void addExperimentalOrganisms() {
   }
   actions.add(new GrowGrazing()); 
   actions.add(new GrowShell()); 
-  actions.add(new Reproduce(40, 0, 500)); 
+  actions.add(new Reproduce(60, 0, 500)); 
+  actions.add(new GrowLegs()); 
   for (int i = 0; i < 20; i++) {
     Genome genome = new Genome(actions, new int[]{219, 197, 156});
     Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
@@ -207,7 +208,7 @@ void drawRay(Location ray) {
 
 void homeostasis() {
   for (int i = 0; i < organisms.size(); i++) {
-    organisms.get(i).homeostasis(ENERGY_COST); 
+    organisms.get(i).homeostasis(); 
   }
 }
 
