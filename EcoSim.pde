@@ -37,15 +37,11 @@ void mouseClicked() {
 }
 
 void pausedText() {
-  if (isPaused) {
-    textSize(16);
-    fill(0,0,0);
-    text("paused", textXOffset, 60);
-  } else {
-    textSize(16);
-    fill(0,0,0);
-    text("pause", textXOffset, 60);
-  }
+  textSize(16);
+  fill(0);
+  String text; 
+  if (isPaused) text = "paused"; else text = "pause"; 
+  text(text, textXOffset, 60);
 }
 
 // === Board Diminsions === //
@@ -62,6 +58,13 @@ final float LEGS_WIDTH_VIEW = 0.5;
 final float LEGS_LENGTH_VIEW_X = 0.5;
 final float SHELL_STROKE = 0.2; 
 final boolean SHOW_LIGHT_RAYS = false; 
+
+// === Info Display === // 
+final float textXOffset = 13; 
+final float panelTop =  BOARD_Y - 210;
+float panelLoc;
+float panelFont = 15;
+float INDICATOR_TRIANGLE_SIZE = 16;
 
 // === Starting Situation === //
 final int START_PLANTS = 100; 
@@ -95,14 +98,7 @@ final float JAWS_MAX_SIZE_X = 0.75;
 final float LEGS_MAX_SIZE_X = 0.3;
 final float SHELL_MAX_SIZE_X = 0.2; 
 
-// === PANEL === // 
-final float textXOffset = 13; 
-final float panelTop =  BOARD_Y - 210;
-float panelLoc;
-float panelFont = 15;
-float INDICATOR_TRIANGLE_SIZE = 16;
-
-// === GENETICS === // 
-final int START_GENETIC_AFFINITY = 0; // 20
+// === Genetics === // 
+final int START_GENETIC_AFFINITY = 10; // set 0-20s
 final float MUTATION_RANGE_PORTION = 0.25; 
 final int COLOR_MUTATION_RANGE = 20;

@@ -1,4 +1,3 @@
-// Moves and finds food of various kinds to eat 
 class Animal extends Organism {
   
   public float bodySize; 

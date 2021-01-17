@@ -15,7 +15,7 @@ void addStartingPlants() {
   actionsWithShell.add(new GrowShell()); 
   for (int i = 0; i < START_PLANTS; i++) {
     Genome genome;
-    if (i % 5 == 0) {
+    if (i % 3 == 0) {
       genome = new Genome(actionsWithShell, new int[]{66, 245, 114});
     } else {
       genome = new Genome(actions, new int[]{66, 245, 114});

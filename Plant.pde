@@ -1,4 +1,3 @@
-// Does not move. Has canopy that obsorbs sunlight 
 class Plant extends Organism {
   
   public float trunk; 
@@ -39,7 +38,7 @@ class Plant extends Organism {
   
   protected void reduceBaseBy(float amount) { 
     trunk -= amount;
-    if (canopy < trunk) canopy++; trunk--; // keep this line?
+    if (canopy < trunk) canopy++; trunk--; 
   }
   
   protected float base() { return this.trunk; }
@@ -52,14 +51,18 @@ class Plant extends Organism {
   }
   
   public void drawOrganism() {
+    setShell();
+    drawTrunk();
+    drawCanopy();
+  }
+  
+  private void setShell() {
     if (shell > 0) {
       stroke(1);
       strokeWeight(shell * SHELL_STROKE);
     } else {
       noStroke(); 
     }
-    drawTrunk();
-    drawCanopy();
   }
   
   public void displayInfo() {
@@ -85,7 +88,7 @@ class Plant extends Organism {
   protected void actOnOrganism(Organism other) {}
   
   protected float removeFromCanopy(float toRemove) { 
-    toRemove = min(toRemove, canopy); 
+    toRemove = min(toRemove - shell, canopy); 
     canopy -= toRemove; 
     return toRemove; 
   }
