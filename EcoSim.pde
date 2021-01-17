@@ -92,7 +92,7 @@ final float SEED_DISPERSAL_COST = 0;
 final float SHELL_PROTECTION = 1; 
 
 // === Restrictions === //
-final float CANOPY_MAX_SIZE_X = 2; 
+final float CANOPY_MAX_SIZE_X = 2;
 final float GRAZING_MAX_SIZE_X = 0.5;
 final float JAWS_MAX_SIZE_X = 0.75;
 final float LEGS_MAX_SIZE_X = 0.3;
