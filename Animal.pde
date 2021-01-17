@@ -1,7 +1,7 @@
 class Animal extends Organism {
   
   public float bodySize; 
-  public float grazing, jaws, legs, fins, climbing, burrowing, fur, longNeck; // last 5 not yet used
+  public float grazing, jaws, legs, fins, climbing, burrowing, fur, longNeck; // last 5 not yet used yet
   private HashMap<Integer, Integer> otherOrganismsConsumedTimes;
   
   public Animal(Genome genome, Location location, float energy) {
@@ -62,8 +62,8 @@ class Animal extends Organism {
   
   private void drawHead() {
     Location headLoc = this.location.getLocOffBy(this.width() / 2, super.orientationInRadians);
+    // Draw the smaller one last so it can be seen
     if (grazing > jaws) {
-      // We have to draw the larger one first so the smaller one is not covered up
       drawCarnivoreHead(headLoc); 
       drawHerbavoreHead(headLoc);
     } else {
@@ -162,8 +162,8 @@ class Animal extends Organism {
     return this.jaws < other.jaws && !this.sameSpecies(other);
   }
   
-  public void obsorbSunlight(float sunlight) {} // does not
-  public void obsorbSunlight() {} // does not
+  public void obsorbSunlight(float sunlight) {} 
+  public void obsorbSunlight() {} 
      
   public String getType() {
     if (this.jaws > this.grazing) {

@@ -20,7 +20,6 @@ void addStartingPlants() {
     } else {
       genome = new Genome(actions, new int[]{66, 245, 114});
     }
-    //genome = new Genome(actions, new int[]{66, 245, 114});
     Plant newPlant = new Plant(genome, new Location(), PLANT_START_ENERGY);
     organisms.add(newPlant);
   }
