@@ -1,5 +1,5 @@
 void settings() {
-  size(BOARD_X, BOARD_Y);
+  size(SCREEN_X, SCREEN_Y);
 }
 
 void setup() {
@@ -12,6 +12,7 @@ void setup() {
 void draw() {
   background(217, 255, 224);
   noStroke(); 
+  circle(750, 750, 10);
   screenTransform();
   drawOrganisms(); 
   markSelected(); 
@@ -32,8 +33,12 @@ void draw() {
 boolean isPaused = true; 
 
 // === Board Diminsions === //
-final int BOARD_X = 750; 
-final int BOARD_Y = 750; 
+final int BOARD_X = 2000; 
+final int BOARD_Y = 2000; 
+final int SCREEN_X = 750;
+final int SCREEN_Y = 750;
+final float X_START = 1000; 
+final float Y_START = 1000;
 
 // === Visuals === ///
 final float BODY_SIZE_VIEW = 1;
@@ -48,22 +53,22 @@ final boolean SHOW_LIGHT_RAYS = false;
 
 // === Info Display === // 
 final float textXOffset = 13; 
-final float panelTop =  BOARD_Y - 210;
+final float panelTop =  SCREEN_Y - 210;
 float crawldown;
 final float panelFont = 15;
 final float INDICATOR_TRIANGLE_SIZE = 16;
 
 // === Starting Situation === //
-final int START_PLANTS = 100; 
-final int START_HERBAVORES = 10; 
-final int START_CARNIVORES = 5; 
+final int START_PLANTS = 300; 
+final int START_HERBAVORES = 30; 
+final int START_CARNIVORES = 15; // /3
 final float PLANT_START_ENERGY = 20;
 final float START_ANIMAL_ENERGY = 40;
 
 // === Movement === //
 final float NOLEG_SPEED = 0; 
 final float LEGS_SPEED = 12; 
-final int GRACE_PERIOD = 100; //was: 10 (when grace period worked differently) 
+final int GRACE_PERIOD = 10; //was: 100
 
 // === Energy and Costs === //
 final float COST_PER_BODY_SIZE = 0.00003; 
@@ -95,8 +100,8 @@ final int COLOR_MUTATION_RANGE = 20;
 final float CHANCE_ACQUIRE_NEW_TRAIT = 0.2;
 
 // === Scrolling, Clicking, and Zooming == // 
-Location screenTopLeft = new Location(0, 0);
-Location screenBottomRight = new Location(750, 750);
+Location screenTopLeft = new Location(X_START, Y_START);
+Location screenBottomRight = new Location(X_START + SCREEN_X, Y_START + SCREEN_Y);
 final float SCROLL_SPEED = 0.01;
 Location mousePressedOn; 
 
@@ -111,7 +116,7 @@ void undoScreenTransform() {
 }
 
 float getScale() {
-  return BOARD_X / (screenBottomRight.getX() - screenTopLeft.getX()); 
+  return SCREEN_X / (screenBottomRight.getX() - screenTopLeft.getX()); 
 }
 
 void mouseClicked() {
