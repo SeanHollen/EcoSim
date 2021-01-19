@@ -115,33 +115,37 @@ abstract class Organism implements Comparable<Organism> {
   protected abstract float base(); 
   
   protected abstract void takeAction(Action action, float toGrowWith); 
-  
-  protected abstract void addEnergy(float energy);
-  
+    
   public abstract void drawOrganism();
   
-  public void displayInfo() {
-    color(0); 
-    float half = INDICATOR_TRIANGLE_SIZE / 2;
-    float full = INDICATOR_TRIANGLE_SIZE; 
+  public void displayMark() {
+    fill(0); 
+    float full = INDICATOR_TRIANGLE_SIZE / getScale(); 
+    float half = full / 2;
     triangle(
     location.getX(), location.getY(), 
     location.getX() - half, location.getY() - full, 
     location.getX() + half, location.getY() - full
     ); 
-    panelLoc = panelTop;
+  }
+  
+  public abstract void displayInfo(); 
+  
+  protected void displayGeneralInfo() {
+    crawldown = panelTop;
+    float xOff = textXOffset;
     textSize(10);
     fill(0,0,0);
     strokeWeight(3);
-    text("TYPE " + getType(), textXOffset, panelLoc += panelFont);
-    text("GENOME " + genome.asString(), textXOffset, panelLoc += panelFont);
-    text("COLOR " + genome.writeColors(), textXOffset, panelLoc += panelFont);
-    text("ID " + ID, textXOffset, panelLoc += panelFont);
-    text("GENERATION " + generation, textXOffset, panelLoc += panelFont);
-    text("AGE " + age, textXOffset, panelLoc += panelFont);
-    text("IS DEAD? " + isDead(), textXOffset, panelLoc += panelFont);
-    text("ENERGY " + round(energy), textXOffset, panelLoc += panelFont);
-    text("SHELL " + round(shell), textXOffset, panelLoc += panelFont);
+    text("TYPE " + getType(), xOff, crawldown += panelFont);
+    text("GENOME " + genome.asString(), xOff, crawldown += panelFont);
+    text("COLOR " + genome.writeColors(), xOff, crawldown += panelFont);
+    text("ID " + ID, xOff, crawldown += panelFont);
+    text("GENERATION " + generation, xOff, crawldown += panelFont);
+    text("AGE " + age, xOff, crawldown += panelFont);
+    text("IS DEAD? " + isDead(), xOff, crawldown += panelFont);
+    text("ENERGY " + round(energy), xOff, crawldown += panelFont);
+    text("SHELL " + round(shell), xOff, crawldown += panelFont);
   }
   
   protected abstract int width();

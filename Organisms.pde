@@ -16,9 +16,9 @@ void addStartingPlants() {
   for (int i = 0; i < START_PLANTS; i++) {
     Genome genome;
     if (i % 3 == 0) {
-      genome = new Genome(actionsWithShell, new int[]{66, 245, 114});
+      genome = new Genome(actionsWithShell, color(66, 245, 114)); 
     } else {
-      genome = new Genome(actions, new int[]{66, 245, 114});
+      genome = new Genome(actions, color(66, 245, 114));
     }
     Plant newPlant = new Plant(genome, new Location(), PLANT_START_ENERGY);
     organisms.add(newPlant);
@@ -35,7 +35,7 @@ void addStartingHerbavores() {
   actions.add(new Reproduce(60, 10, 500)); 
   actions.add(new GrowLegs()); 
   for (int i = 0; i < 20; i++) {
-    Genome genome = new Genome(actions, new int[]{219, 197, 156});
+    Genome genome = new Genome(actions, color(219, 197, 156));
     Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
     organisms.add(newAnimal);
   }
@@ -50,18 +50,18 @@ void addStartingCarnivores() {
   actions.add(new GrowLegs()); 
   actions.add(new Reproduce(40, 60, 500)); 
   for (int i = 0; i < 20; i++) {
-    Genome genome = new Genome(actions, new int[]{217, 118, 85});
+    Genome genome = new Genome(actions, color(217, 118, 85));
     Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
     organisms.add(newAnimal);
   }
 }
 
-void selectOrganism() {
+void selectOrganism(Location clicked) {
   selected = null; 
-  Location loc = new Location(mouseX, mouseY); 
+  Location loc = new Location(clicked.getX(), clicked.getY()); 
   ensureSorted(); 
   int i = 0; 
-  while (i < organisms.size() && mouseX < organisms.get(i).location.getX()) i++; 
+  while (i < organisms.size() && clicked.getX() < organisms.get(i).location.getX()) i++; 
   for (; i < organisms.size(); i++) {
     if (organisms.get(i).intersects(loc)) {
       selected = organisms.get(i); 
@@ -78,9 +78,15 @@ void drawOrganisms() {
   }
 }
 
-void drawSelected() {
+void infoOfSelected() {
   if (selected != null) {
     selected.displayInfo();
+  } 
+}
+
+void markSelected() {
+  if (selected != null) {
+    selected.displayMark();
   } 
 }
 

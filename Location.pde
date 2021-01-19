@@ -21,6 +21,22 @@ class Location implements Comparable<Location> {
     return this.y; 
   }
   
+  public void setX(float x) {
+    this.x = x; 
+  }
+  
+  public void setY(float y) {
+    this.y = y;
+  }
+  
+  public void addToX(float amt) {
+    x += amt;
+  }
+  
+  public void addToY(float amt) {
+    y += amt;
+  }
+  
   public void moveBy(float step, float radians) {
     assert (!Float.isNaN(step));
     assert (!Float.isNaN(radians));
@@ -47,6 +63,46 @@ class Location implements Comparable<Location> {
     float newY = this.y + amountOff * sin(radians); 
     return new Location(newX, newY); 
   }
+  
+  public Location getLocBySubtracting(Location other) {
+    return new Location(this.x - other.x, this.y - other.y); 
+  }
+  
+  public Location getLocByAdding(Location other) {
+    return new Location(this.x + other.x, this.y + other.y); 
+  }
+  
+  public Location inverse() {
+    return new Location(- x, -y);
+  }
+  
+  public Location getScaledDownBy(float amt) {
+    return new Location(x / amt, y / amt); 
+  }
+  
+  public Location getScaledUpBy(float amt) {
+    return new Location(x * amt, y * amt); 
+  }
+  
+  public void noNegatives() {
+    if (x < 0) x = 0; 
+    if (y < 0) y = 0;
+  }
+  
+  public void maxX(float max) {
+    x = min(max, x); 
+  }
+  
+  public void maxY(float max) {
+    y = min(max, y); 
+  }
+  
+  public void add(float amt) {
+    this.x += amt;
+    this.y += amt; 
+  }
+  
+  public void subtract(float amt) { this.add(- amt); }
   
   public Location clone() {
     return new Location(x, y);

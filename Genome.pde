@@ -5,29 +5,25 @@ class Genome {
   
   private ArrayList<Action> lifeEvents; 
   private int eventsIndex; 
-  private int[] asColors; 
+  private color theColor; 
   private int affinityDistance; 
   
   public Genome(ArrayList<Action> lifeEvents) {
     this.lifeEvents = lifeEvents; 
     this.eventsIndex = 0; 
-    this.asColors = new int[]{219, 197, 156}; 
+    this.theColor = color(219, 197, 156); 
     this.affinityDistance = START_GENETIC_AFFINITY;
   }
   
-  public Genome(ArrayList<Action> lifeEvents, int[] colors) {
+  public Genome(ArrayList<Action> lifeEvents, color theColor) {
     this.lifeEvents = lifeEvents; 
     this.eventsIndex = 0; 
-    this.asColors = colors; 
+    this.theColor = theColor; 
     this.affinityDistance = START_GENETIC_AFFINITY;
   }
   
-  public void setFillToColor() {
-    fill(asColors[0], asColors[1], asColors[2]); 
-  }
-  
-  public void setStrokeToColor() {
-    stroke(asColors[0], asColors[1], asColors[2]); 
+  public color getColor() {
+    return theColor; 
   }
   
   private Action getNextAction() {
@@ -37,13 +33,13 @@ class Genome {
     return lifeEvents.get(eventsIndex++);
   }
   
-  private int[] mutatedColor() {
+  private color mutatedColor() {
     int plusOne = COLOR_MUTATION_RANGE + 1;
     int half = COLOR_MUTATION_RANGE / 2;
-    int r = asColors[0] + genomeRandom.nextInt(plusOne) - half; 
-    int g = asColors[1] + genomeRandom.nextInt(plusOne) - half; 
-    int b = asColors[2] + genomeRandom.nextInt(plusOne) - half; 
-    return new int[]{r, g, b}; 
+    float r = red(theColor) + genomeRandom.nextInt(plusOne) - half; 
+    float g = green(theColor) + genomeRandom.nextInt(plusOne) - half; 
+    float b = blue(theColor) + genomeRandom.nextInt(plusOne) - half; 
+    return color(r, g, b); 
   }
   
   public String asString() {
@@ -55,17 +51,17 @@ class Genome {
   }
   
   public String writeColors() {
-    return "R" + asColors[0] + "G" + asColors[1] + "B" + asColors[2]; 
+    return "R" + red(theColor) + "G" + green(theColor) + "B" + blue(theColor); 
   }
   
   public boolean sameSpecies(Genome other) {
     return geneticDistance(other) <= affinityDistance; 
   }
   
-  public int geneticDistance(Genome other) {
-    int diffr = asColors[0] - other.asColors[0]; 
-    int diffg = asColors[1] - other.asColors[1]; 
-    int diffb = asColors[2] - other.asColors[2]; 
+  public float geneticDistance(Genome other) {
+    float diffr = red(theColor) - red(other.theColor); 
+    float diffg = green(theColor) - green(other.theColor); 
+    float diffb = blue(theColor) - blue(other.theColor); 
     return abs(diffr) + abs(diffg) + abs(diffb); 
   }
   
@@ -78,9 +74,12 @@ class Genome {
     if (genomeRandom.nextInt(2) == 1) {
       newGenome.delete(); 
     } else {
-      newGenome.lengthen();
+      newGenome.duplicate();
     }
     newGenome.swap(); 
+    if (genomeRandom.nextFloat() < CHANCE_ACQUIRE_NEW_TRAIT) {
+      newGenome.acquireRandomTrait(); 
+    } 
     return newGenome; 
   }
   
@@ -88,13 +87,18 @@ class Genome {
     Collections.swap(lifeEvents, genomeRandom.nextInt(lifeEvents.size()), genomeRandom.nextInt(lifeEvents.size()));
   }
   
-  public void lengthen() {
+  private void duplicate() {
     lifeEvents.add(lifeEvents.get(genomeRandom.nextInt(lifeEvents.size()))); 
   }
   
-  public void delete() {
+  private void delete() {
     // todo should I make lifeEvents a linked list? 
     lifeEvents.remove(genomeRandom.nextInt(lifeEvents.size()));
+  }
+  
+  private void acquireRandomTrait() {
+    if (allActions == null) setupAllActionsList(); 
+    lifeEvents.add(allActions.get(genomeRandom.nextInt(allActions.size()))); 
   }
   
 }

@@ -27,10 +27,6 @@ class Plant extends Organism {
   }
   
   public void obsorbSunlight(float energy) {
-    addEnergy(energy); 
-  }
-  
-  protected void addEnergy(float energy) {
     super.energy += energy; 
   }
   
@@ -66,18 +62,19 @@ class Plant extends Organism {
   }
   
   public void displayInfo() {
-    super.displayInfo();
-    text("TRUNK " + round(trunk), textXOffset, panelLoc += panelFont);
-    text("CANOPY " + round(canopy), textXOffset, panelLoc += panelFont);
+    displayGeneralInfo();
+    float xOff = textXOffset;
+    text("TRUNK " + round(trunk), xOff, crawldown += panelFont);
+    text("CANOPY " + round(canopy), xOff, crawldown += panelFont);
   }
   
   private void drawTrunk() {
-    fill(128,0,0); 
+    fill(128, 0, 0); 
     circle(super.location.getX(), super.location.getY(), (this.trunk * TRUNK_SIZE_VIEW));
   }
   
   private void drawCanopy() {
-    fill(66, 245, 114); 
+    fill(super.genome.getColor()); 
     circle(super.location.getX(), super.location.getY(), (this.canopy * CANOPY_SIZE_VIEW));
   }
   

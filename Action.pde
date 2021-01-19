@@ -1,11 +1,25 @@
-// grow body and grow stem are the "safest" actions; they guarentee that energy spent on them is not wasted, 
-// because other actions can fail to go through (by design) in various situations 
+// Grow body and grow stem are the "safest" actions; it guarentees that energy spent on it is not wasted;
+// other actions can fail to go through (by design) because of constraints 
 
 interface Action {
   void act(Animal organism, float amount);
   void act(Plant organism, float amount);
   char toChar(); 
   Action mutation(); 
+}
+
+// Why would an organism acquire this? I don't know, but if they do it may be a sign that 
+// others are conferring some harm
+class Stall implements Action {
+  
+  public void act(Plant plant, float amount) {}
+  
+  public void act(Animal plant, float amount) {}
+  
+  public char toChar() { return 'N'; }
+  
+  public Action mutation() { return new Stall(); }
+  
 }
 
 class Reproduce implements Action {
@@ -161,3 +175,18 @@ class GrowShell implements Action {
 // G: grazing 
 // L: legs
 // S: shell
+
+ArrayList<Action> allActions;
+
+void setupAllActionsList() {
+  allActions = new ArrayList<Action>();
+  allActions.add(new Stall()); 
+  allActions.add(new Reproduce(40, 100, 500)); 
+  allActions.add(new GrowBody()); 
+  allActions.add(new GrowCanopy()); 
+  allActions.add(new GrowTrunk()); 
+  allActions.add(new GrowJaws()); 
+  allActions.add(new GrowGrazing());
+  allActions.add(new GrowLegs()); 
+  allActions.add(new GrowShell());
+}
