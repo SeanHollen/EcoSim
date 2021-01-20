@@ -2,6 +2,8 @@ class Plant extends Organism {
   
   public float trunk; 
   public float canopy; 
+  public float marine;
+  public boolean isAquatic; 
   
   public Plant(Genome genome, Location location, float energy) {
     super(genome, location, energy, 0); 
@@ -10,11 +12,13 @@ class Plant extends Organism {
   
   public Plant(Genome genome, Location location, float energy, int generation) {
     super(genome, location, energy, generation); 
+    isAquatic = isWater(location);
     initializeTraits(); 
   }
   
   void initializeTraits() {
     this.trunk = 2; 
+    this.marine = 0; 
     this.canopy = 0; 
   }
   
@@ -30,20 +34,31 @@ class Plant extends Organism {
     super.energy += energy; 
   }
   
-  protected float sizeCost() { return trunk * trunk * trunk * PI * COST_PER_TRUNK; } 
+  protected float sizeCost() {
+    float marineCost = marine * marine * marine * PI * COST_PER_TRUNK; 
+    float trunkCost = trunk * trunk * trunk * PI * COST_PER_TRUNK;
+    return max(marineCost, trunkCost);
+  } 
   
-  protected void reduceBaseBy(float amount) { 
-    trunk -= amount;
+  protected void reduceBaseBy(float amount) {
+    if (marine > 0) marine -= amount; 
+    if (canopy < marine) canopy++; marine--; 
+    if (trunk > 0) trunk -= amount;
     if (canopy < trunk) canopy++; trunk--; 
   }
   
-  protected float base() { return this.trunk; }
+  protected float base() { return max(this.trunk, this.marine); }
   
   protected void takeAction(Action action, float toGrowWith) { action.act(this, toGrowWith); }
   
   protected void enforceConstraints() {
-    canopy = min(canopy, trunk * CANOPY_MAX_SIZE_X); 
-    shell = min(shell, trunk * SHELL_MAX_SIZE_X); 
+    if (isAquatic) {
+      canopy = min(canopy, marine * CANOPY_MAX_SIZE_X); 
+      shell = min(shell, marine * SHELL_MAX_SIZE_X); 
+    } else {
+      canopy = min(canopy, trunk * CANOPY_MAX_SIZE_X); 
+      shell = min(shell, trunk * SHELL_MAX_SIZE_X); 
+    }
   }
   
   public void drawOrganism() {
@@ -65,6 +80,7 @@ class Plant extends Organism {
     displayGeneralInfo();
     float xOff = textXOffset;
     text("TRUNK " + round(trunk), xOff, crawldown += panelFont);
+    text("MARINE " + round(marine), xOff, crawldown += panelFont);
     text("CANOPY " + round(canopy), xOff, crawldown += panelFont);
   }
   
@@ -81,32 +97,28 @@ class Plant extends Organism {
   protected int width() {
     return (int) (canopy * BODY_SIZE_VIEW);
   }
-  
-  protected void actOnOrganism(Organism other) {}
-  
+    
   protected float removeFromCanopy(float toRemove) { 
     toRemove = min(toRemove - shell, canopy); 
     canopy -= toRemove; 
     return toRemove; 
   }
+      
+  public String describe() { return "plant"; }
   
-  protected boolean canBePredatedBy(Animal other) {
-    return false; 
-  }
-  
-  protected float removeFromBody(float toRemove) { return 0; }; 
-  
-  public void move() {}; 
-  
-  public String describe() {
-    return "PLANT"; 
-  }
+  public boolean isPlant() { return true; }
   
   public boolean isDead() {
-    return super.age >= INFANCY_LENGTH && this.trunk <= 0; 
+    if (super.age < INFANCY_LENGTH) {
+      return false; 
+    }
+    if (isAquatic) {
+      return marine <= 0; 
+    } else {
+      return trunk <= 0; 
+    }
   }
   
-  public float getPlantHeight() {
-    return this.trunk;
-  }
+  public float getPlantHeight() { return this.trunk; }
+  
 }

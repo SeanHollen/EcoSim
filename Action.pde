@@ -1,4 +1,4 @@
-// Grow body and grow stem are the "safest" actions; it guarentees that energy spent on it is not wasted;
+// Grow body and grow trunk are the "safest" actions; it guarentees that energy spent on it is not wasted;
 // other actions can fail to go through (by design) because of constraints 
 
 interface Action {
@@ -123,6 +123,21 @@ class GrowTrunk implements Action {
   Action mutation() { return this; }
 }
 
+class GrowMarine implements Action {
+  
+  public void act(Plant plant, float amount) {
+    plant.marine += amount; 
+  }
+  
+  public void act(Animal notapplicable, float amount){}
+  
+  public String toString() { return "grow marine"; }
+  
+  public char toChar() { return 'M'; }
+  
+  Action mutation() { return this; }
+}
+
 class GrowJaws implements Action {
   
   public void act(Animal animal, float amount) {
@@ -185,14 +200,15 @@ class GrowShell implements Action {
   Action mutation() { return this; }
 }
 
-// R: reproduce
-// B: body
-// C: canopy
-// T: trunk
-// J: jaws
-// G: grazing 
-// L: legs
-// S: shell
+// R: Reproduce
+// B: Body
+// C: Canopy
+// T: Trunk
+// J: Jaws
+// G: Grazing 
+// L: Legs
+// S: Shell
+// M: Marine 
 
 ArrayList<Action> allActions;
 
@@ -203,6 +219,7 @@ void setupAllActionsList() {
   allActions.add(new GrowBody()); 
   allActions.add(new GrowCanopy()); 
   allActions.add(new GrowTrunk()); 
+  allActions.add(new GrowMarine());
   allActions.add(new GrowJaws()); 
   allActions.add(new GrowGrazing());
   allActions.add(new GrowLegs()); 

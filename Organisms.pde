@@ -167,10 +167,12 @@ HashMap<Location, Plant> plantsToGetLight(ArrayList<Location> lightRays) {
       if (org.bodyWestOfXPoint(ray.getX())) {
         leftMostRayIndex++; 
       } else if (org.intersects(ray)) {
-        if (!results.containsKey(ray) && org.describe() == "PLANT") {
+        if (!org.isPlant()) {
+          continue; 
+        } else if (!results.containsKey(ray)) {
           results.put(ray, (Plant) org); 
-        } else if (results.containsKey(ray) && org.tallerPlantThan(results.get(ray))) {
-          results.put(ray, (Plant) org); 
+        } else if (org.tallerPlantThan(results.get(ray))) {
+          results.put(ray, (Plant) org); // error here 
         }
       } else if (org.bodyEastOfXPoint(ray.getX())) {
         break; 

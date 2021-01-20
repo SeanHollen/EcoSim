@@ -65,8 +65,8 @@ final float INDICATOR_TRIANGLE_SIZE = 16;
 
 // === Starting Situation === //
 final int START_PLANTS = 300; 
-final int START_HERBAVORES = 60; 
-final int START_CARNIVORES = 30; 
+final int START_HERBAVORES = 100; 
+final int START_CARNIVORES = 100; 
 final float PLANT_START_ENERGY = 20;
 final float START_ANIMAL_ENERGY = 40;
 
@@ -160,6 +160,7 @@ void mouseWheel(MouseEvent e) {
   screenBottomRight.subFromY(yChange * (1 - cursorBottomSkew));
   screenTopLeft.addToX(xChange * cursorRightSkew); 
   screenTopLeft.addToY(yChange * cursorBottomSkew);
+  screenTopLeft.ensureNotTooCloseTo(screenBottomRight);
   ensureScreenInBounds();
 }
 
@@ -213,11 +214,8 @@ void mouseDragged() {
 }
 
 void keyPressed() {
-  switch(key) {
-    case 'r': 
-      if (selected != null) {
-        selected.energy = -1000; 
-        selected.reduceBaseBy(selected.base());
-      }
+  if (key == 'r' && selected != null) {
+    selected.energy = -1000; 
+    selected.reduceBaseBy(selected.base());
   }
 }

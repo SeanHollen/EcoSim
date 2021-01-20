@@ -167,25 +167,20 @@ class Animal extends Organism {
     grazing = max(0, grazing - half);
     jaws = max(0, jaws - half);
   }
-  
-  protected float removeFromCanopy(float toRemove) { return 0; }; 
-  
+    
   protected boolean canBePredatedBy(Animal other) {
     return this.jaws < other.jaws && !other.sameSpecies(this);
   }
-  
-  public void obsorbSunlight(float sunlight) {} 
-  public void obsorbSunlight() {} 
-     
+       
   public String describe() {
     String description = ""; 
     if (this.fins > this.legs) {
-      description += "FISH "; 
+      description += "fish "; 
     }
     if (this.jaws > this.grazing) {
-      description += "CARNIVORE"; 
+      description += "carnivore"; 
     } else {
-      description += "HERBAVORE";
+      description += "herbavore";
     }
     return description; 
   }
@@ -194,8 +189,6 @@ class Animal extends Organism {
     return super.age >= INFANCY_LENGTH && this.bodySize <= 0; 
   }
   
-  public float getPlantHeight() {
-    return 0;
-  }
+  public boolean isPlant() { return false; } // should be possible to delete this 
   
 }

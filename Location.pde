@@ -62,8 +62,6 @@ class Location implements Comparable<Location> {
   }
   
   public void moveBy(float step, float radians) {
-    assert (!Float.isNaN(step));
-    assert (!Float.isNaN(radians));
     x += step * Math.cos(radians);
     y += step * Math.sin(radians);
     rollOver(); 
@@ -112,6 +110,21 @@ class Location implements Comparable<Location> {
   public boolean intersects(Location other, float minCloseness) {
     float distance = sqrt(pow(abs(this.x - other.x), 2) + pow(abs(this.y - other.y), 2));
     return distance <= minCloseness; 
+  }
+  
+  public void ensureNotTooCloseTo(Location other) {
+    if (this.x - other.x > 0 && this.x - other.x < 2) {
+      this.x = other.x + 2;
+    }
+    if (other.x - this.x > 0 && other.x - this.x < 2) {
+      other.x = this.x + 2;
+    }
+    if (this.y - other.y > 0 && this.y - other.y < 2) {
+      this.y = other.y + 2;
+    }
+    if (other.y - this.y > 0 && other.y - this.y < 2) {
+      other.y = this.y + 2;
+    }
   }
   
   public int compareTo(Location other) {

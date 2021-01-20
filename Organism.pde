@@ -2,16 +2,16 @@ import java.util.Comparator;
 
 abstract class Organism implements Comparable<Organism> {
   
-  public Location location; 
-  private float orientationInRadians; 
   private int age;
   private int ID; 
   private float energy; 
   public float shell;
   private float spikes; 
   private int generation;
+  private float orientationInRadians; 
   private String lastTakenAction = ""; 
   
+  public Location location; 
   private Genome genome; 
   
   public Organism(Genome genome, Location location, float energy) {
@@ -105,21 +105,9 @@ abstract class Organism implements Comparable<Organism> {
     enforceConstraints(); 
   }
   
-  protected abstract void enforceConstraints(); 
-  
   private float ageCost() {
     return AGE_COST_PER1K_ONGOING * (float) age / 1000.0;
   }
-    
-  protected abstract float sizeCost(); 
-  
-  protected abstract void reduceBaseBy(float amount); 
-  
-  protected abstract float base(); 
-  
-  protected abstract void takeAction(Action action, float toGrowWith); 
-    
-  public abstract void drawOrganism();
   
   public void displayMark() {
     fill(0); 
@@ -132,15 +120,13 @@ abstract class Organism implements Comparable<Organism> {
     ); 
   }
   
-  public abstract void displayInfo(); 
-  
   protected void displayGeneralInfo() {
     crawldown = panelTop;
     float xOff = textXOffset;
     textSize(10);
     fill(0,0,0);
     strokeWeight(3);
-    text("TYPE " + getType(), xOff, crawldown += panelFont);
+    text("TYPE " + describe(), xOff, crawldown += panelFont);
     text("GENOME " + genome.asString(), xOff, crawldown += panelFont);
     text("LAST ACT " + lastTakenAction, xOff, crawldown += panelFont);
     text("COLOR " + genome.writeColors(), xOff, crawldown += panelFont);
@@ -152,23 +138,41 @@ abstract class Organism implements Comparable<Organism> {
     text("SHELL " + round(shell), xOff, crawldown += panelFont);
   }
   
+  public abstract void displayInfo(); 
+  
+  protected abstract void enforceConstraints(); 
+  
+  protected abstract float sizeCost(); 
+  
+  protected abstract void reduceBaseBy(float amount); 
+  
+  protected abstract float base(); 
+  
+  protected abstract void takeAction(Action action, float toGrowWith); 
+    
+  public abstract void drawOrganism();
+  
   protected abstract int width();
   
-  protected abstract void actOnOrganism(Organism other);
+  protected void actOnOrganism(Organism other) {}
   
-  protected abstract float removeFromBody(float toRemove);
+  protected float removeFromBody(float toRemove) { return 0; }; 
   
-  protected abstract float removeFromCanopy(float toRemove);  
+  protected float removeFromCanopy(float toRemove) { return 0; }
     
-  protected abstract boolean canBePredatedBy(Animal other);
+  protected boolean canBePredatedBy(Animal other) { return false; }
   
-  public abstract void move(); 
+  public boolean isPlant() { return false; }; 
+  
+  protected float getPlantHeight() { return 0; }
+  
+  public void obsorbSunlight(float sunlight) {}
+  
+  public void obsorbSunlight() {}
+  
+  public void move() {}
   
   public abstract boolean isDead();
-  
-  public abstract void obsorbSunlight(float sunlight); 
-  
-  public abstract void obsorbSunlight(); 
   
   protected boolean sameSpecies(Organism other) {
     return this.genome.sameSpecies(other.genome); 
@@ -179,8 +183,6 @@ abstract class Organism implements Comparable<Organism> {
   public boolean tallerPlantThan(Organism other) {
     return this.getPlantHeight() > other.getPlantHeight();
   }
-  
-  protected abstract float getPlantHeight();
     
   public int compareTo(Organism other) {
     float thisLeftMostPoint = this.leftMostPoint();
