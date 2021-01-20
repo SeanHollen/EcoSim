@@ -31,8 +31,13 @@ class Animal extends Organism {
   }
   
   public void move() {
-    float step = getStep(); 
-    super.location.moveBy(step, super.orientationInRadians); 
+    Location newLoc = location.getBodyLocOffBy(getStep(), super.orientationInRadians);
+    if (isWater(newLoc)) {
+      setRandomOrientation();
+    } else {
+      location = newLoc; 
+    }
+    if (isWater(location)) super.energy--; 
   }
   
   private float getStep() {
@@ -108,7 +113,6 @@ class Animal extends Organism {
   protected void actOnOrganism(Organism other) {
     if (!inGracePeriod(other)) {
       eatOtherIfPossible(other);
-      setRandomOrientation(); 
       otherOrganismsConsumedTimes.put(other.ID, frameCount); 
     } 
   }
@@ -126,6 +130,7 @@ class Animal extends Organism {
         toGrowBy += other.removeFromBody(canPredate); 
       }
       if (toGrowBy > 0) {
+        setRandomOrientation(); 
         super.energy += toGrowBy;
       }
   }
@@ -166,18 +171,23 @@ class Animal extends Organism {
   protected float removeFromCanopy(float toRemove) { return 0; }; 
   
   protected boolean canBePredatedBy(Animal other) {
-    return this.jaws < other.jaws && !this.sameSpecies(other);
+    return this.jaws < other.jaws && !other.sameSpecies(this);
   }
   
   public void obsorbSunlight(float sunlight) {} 
   public void obsorbSunlight() {} 
      
-  public String getType() {
-    if (this.jaws > this.grazing) {
-      return "CARNIVORE"; 
-    } else {
-      return "HERBAVORE";
+  public String describe() {
+    String description = ""; 
+    if (this.fins > this.legs) {
+      description += "FISH "; 
     }
+    if (this.jaws > this.grazing) {
+      description += "CARNIVORE"; 
+    } else {
+      description += "HERBAVORE";
+    }
+    return description; 
   }
   
   public boolean isDead() {

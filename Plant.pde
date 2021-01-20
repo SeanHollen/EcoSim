@@ -98,7 +98,7 @@ class Plant extends Organism {
   
   public void move() {}; 
   
-  public String getType() {
+  public String describe() {
     return "PLANT"; 
   }
   

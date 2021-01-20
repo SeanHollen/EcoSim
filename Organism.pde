@@ -10,6 +10,7 @@ abstract class Organism implements Comparable<Organism> {
   public float shell;
   private float spikes; 
   private int generation;
+  private String lastTakenAction = ""; 
   
   private Genome genome; 
   
@@ -96,7 +97,9 @@ abstract class Organism implements Comparable<Organism> {
       this.energy = 0;
     } else if (this.energy > base()) {
       float toGrowWith = min(this.energy - base(), GROWTH_SPEED);
-      takeAction(genome.getNextAction(), toGrowWith); 
+      Action nextAction = genome.getNextAction(); 
+      lastTakenAction = nextAction.toString(); 
+      takeAction(nextAction, toGrowWith); 
       this.energy -= toGrowWith;
     }
     enforceConstraints(); 
@@ -139,6 +142,7 @@ abstract class Organism implements Comparable<Organism> {
     strokeWeight(3);
     text("TYPE " + getType(), xOff, crawldown += panelFont);
     text("GENOME " + genome.asString(), xOff, crawldown += panelFont);
+    text("LAST ACT " + lastTakenAction, xOff, crawldown += panelFont);
     text("COLOR " + genome.writeColors(), xOff, crawldown += panelFont);
     text("ID " + ID, xOff, crawldown += panelFont);
     text("GENERATION " + generation, xOff, crawldown += panelFont);
@@ -170,7 +174,7 @@ abstract class Organism implements Comparable<Organism> {
     return this.genome.sameSpecies(other.genome); 
   }
   
-  public abstract String getType(); 
+  public abstract String describe(); 
   
   public boolean tallerPlantThan(Organism other) {
     return this.getPlantHeight() > other.getPlantHeight();

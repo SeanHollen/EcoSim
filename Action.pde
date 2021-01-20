@@ -18,6 +18,8 @@ class Stall implements Action {
   
   public char toChar() { return 'N'; }
   
+  public String toString() { return "stall"; }
+  
   public Action mutation() { return new Stall(); }
   
 }
@@ -61,6 +63,8 @@ class Reproduce implements Action {
     }
   }
   
+  public String toString() { return "reproduce"; }
+  
   public char toChar() { return 'R'; }
   
   Action mutation() { 
@@ -82,6 +86,8 @@ class GrowBody implements Action {
   
  public void act(Plant notapplicable, float amount) {}
  
+ public String toString() { return "grow body"; }
+ 
  public char toChar() { return 'B'; }
  
  Action mutation() { return this; }
@@ -94,6 +100,8 @@ class GrowCanopy implements Action {
   }
   
   public void act(Animal notapplicable, float amount){}
+  
+  public String toString() { return "grow canopy"; }
   
   public char toChar() { return 'C'; }
   
@@ -108,6 +116,8 @@ class GrowTrunk implements Action {
   
   public void act(Animal notapplicable, float amount){}
   
+  public String toString() { return "grow trunk"; }
+  
   public char toChar() { return 'T'; }
   
   Action mutation() { return this; }
@@ -120,6 +130,8 @@ class GrowJaws implements Action {
   }
   
   public void act(Plant notapplicable, float amount){}
+  
+  public String toString() { return "grow jaws"; }
   
   public char toChar() { return 'J'; }
   
@@ -134,6 +146,8 @@ class GrowGrazing implements Action {
   
   public void act(Plant notapplicable, float amount){}
   
+  public String toString() { return "grow grazing"; }
+  
   public char toChar() { return 'G'; }
   
   Action mutation() { return this; }
@@ -146,6 +160,8 @@ class GrowLegs implements Action {
   }
   
   public void act(Plant notapplicable, float amount){}
+  
+  public String toString() { return "grow legs"; }
   
   public char toChar() { return 'L'; }
   
@@ -161,6 +177,8 @@ class GrowShell implements Action {
   public void act(Plant plant, float amount) {
     plant.shell += amount; 
   }
+  
+  public String toString() { return "grow shell"; }
   
   public char toChar() { return 'S'; }
   

@@ -51,7 +51,7 @@ class Genome {
   }
   
   public String writeColors() {
-    return "R" + red(theColor) + "G" + green(theColor) + "B" + blue(theColor); 
+    return "R" + (int)red(theColor) + " G" + (int)green(theColor) + " B" + (int)blue(theColor); 
   }
   
   public boolean sameSpecies(Genome other) {

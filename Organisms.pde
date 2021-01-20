@@ -20,7 +20,7 @@ void addStartingPlants() {
     } else {
       genome = new Genome(actions, color(66, 245, 114));
     }
-    Plant newPlant = new Plant(genome, new Location(), PLANT_START_ENERGY);
+    Plant newPlant = new Plant(genome, new Location().onLand(), PLANT_START_ENERGY);
     organisms.add(newPlant);
   }
 }
@@ -36,7 +36,7 @@ void addStartingHerbavores() {
   actions.add(new GrowLegs()); 
   for (int i = 0; i < 20; i++) {
     Genome genome = new Genome(actions, color(219, 197, 156));
-    Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
+    Animal newAnimal = new Animal(genome, new Location().onLand(), START_ANIMAL_ENERGY);
     organisms.add(newAnimal);
   }
 }
@@ -51,7 +51,7 @@ void addStartingCarnivores() {
   actions.add(new Reproduce(40, 60, 500)); 
   for (int i = 0; i < 20; i++) {
     Genome genome = new Genome(actions, color(217, 118, 85));
-    Animal newAnimal = new Animal(genome, new Location(), START_ANIMAL_ENERGY);
+    Animal newAnimal = new Animal(genome, new Location().onLand(), START_ANIMAL_ENERGY);
     organisms.add(newAnimal);
   }
 }
@@ -167,7 +167,7 @@ HashMap<Location, Plant> plantsToGetLight(ArrayList<Location> lightRays) {
       if (org.bodyWestOfXPoint(ray.getX())) {
         leftMostRayIndex++; 
       } else if (org.intersects(ray)) {
-        if (!results.containsKey(ray) && org.getType() == "PLANT") {
+        if (!results.containsKey(ray) && org.describe() == "PLANT") {
           results.put(ray, (Plant) org); 
         } else if (results.containsKey(ray) && org.tallerPlantThan(results.get(ray))) {
           results.put(ray, (Plant) org); 
