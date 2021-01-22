@@ -83,7 +83,7 @@ class Animal extends Organism {
   }
   
   private void shellStroke() {
-    if (shell != 0) {
+    if (shell <= 0) {
       stroke(1);
       strokeWeight(shell * SHELL_STROKE);
     } else {
