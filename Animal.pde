@@ -180,10 +180,10 @@ class Animal extends Organism {
       float canPredate = max((this.jaws * JAWS_X) - (other.shell * SHELL_PROTECTION_X), 0); 
       float stomachForMeat = 1 - (STOMACH_SPECIALIZATION * (grazing / (grazing + jaws + 0.01)));
       toGrowBy += other.removeFromBody(canPredate * stomachForMeat); 
-      super.energy -= (other.spikes * SPIKES_X);
     }
     if (toGrowBy > 0) {
       setRandomOrientation(); 
+      super.energy -= (other.spikes * SPIKES_X);
       super.energy += toGrowBy;
     }
   }
