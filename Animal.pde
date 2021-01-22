@@ -164,11 +164,12 @@ class Animal extends Organism {
   
   private void eatOtherIfPossible(Organism other) {
     int toGrowBy = 0;
-    float percentGrazing = grazing / (grazing + jaws + 0.01); // this var essentially "punishes" omnivores...
-    toGrowBy += other.removeFromCanopy(this.grazing * GRAZING_X) * percentGrazing; 
+    float stomachForPlants = 1 - (STOMACH_SPECIALIZATION * (jaws / (grazing + jaws + 0.01))); 
+    toGrowBy += other.removeFromCanopy(this.grazing * GRAZING_X) * stomachForPlants; 
     if (other.canBePredatedBy(this)) {
       float canPredate = max((this.jaws * JAWS_X) - (other.shell * SHELL_PROTECTION_X), 0); 
-      toGrowBy += other.removeFromBody(canPredate) * (1 - percentGrazing); 
+      float stomachForMeat = 1 - (STOMACH_SPECIALIZATION * (grazing / (grazing + jaws + 0.01)));
+      toGrowBy += other.removeFromBody(canPredate) * stomachForMeat; 
     }
     if (toGrowBy > 0) {
       setRandomOrientation(); 

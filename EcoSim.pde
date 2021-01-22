@@ -7,8 +7,9 @@ void setup() {
   addStartingPlants(); 
   addStartingHerbavores();
   addStartingCarnivores();
+  println("creating map");
   generateMap();
-  println("map created");
+  println("created");
 }
 
 void draw() {
@@ -96,6 +97,8 @@ final float SEED_DISPERSAL_COST = 0;
 final float SHELL_PROTECTION_X = 1; 
 final float JAWS_X = 1; 
 final float GRAZING_X = 1; 
+// stomach specialization exists to essentially make it harder to be an omnivore
+final float STOMACH_SPECIALIZATION = 0.5; 
 
 // === Restrictions === //
 final float CANOPY_MAX_SIZE_X = 2;
