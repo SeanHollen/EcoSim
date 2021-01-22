@@ -7,9 +7,7 @@ void setup() {
   addStartingPlants(); 
   addStartingHerbavores();
   addStartingCarnivores();
-  println("creating map");
   generateMap();
-  println("created");
 }
 
 void draw() {
@@ -51,6 +49,7 @@ final float HEAD_SIZE_VIEW = 1;
 final float JAWS_SIZE_VIEW = 1;
 final float TRUNK_SIZE_VIEW = 1;
 final float CANOPY_SIZE_VIEW = 1;
+final float SPIKES_SIZE_VIEW = 1; 
 final float LEGS_WIDTH_VIEW = 0.5; 
 final float FINS_VIEW_X = 2; 
 final float LEGS_LENGTH_VIEW_X = 0.5;
@@ -95,10 +94,11 @@ final float SEED_DISPERSAL_COST = 0;
 
 // === Trait Benefits === //
 final float SHELL_PROTECTION_X = 1; 
+final float SPIKES_X = 1; 
 final float JAWS_X = 1; 
 final float GRAZING_X = 1; 
 // stomach specialization exists to essentially make it harder to be an omnivore
-final float STOMACH_SPECIALIZATION = 0.5; 
+final float STOMACH_SPECIALIZATION = 0.75; 
 
 // === Restrictions === //
 final float CANOPY_MAX_SIZE_X = 2;
@@ -106,7 +106,8 @@ final float GRAZING_MAX_SIZE_X = 0.5;
 final float JAWS_MAX_SIZE_X = 0.75;
 final float LEGS_MAX_SIZE_X = 0.40;
 final float FINS_MAX_SIZE_X = 0.40;
-final float SHELL_MAX_SIZE_X = 0.2; 
+final float SHELL_MAX_SIZE_X = 0.3; 
+final float SPIKES_MAX_SIZE_X = 0.3; 
 
 // === Genetics === // 
 final int START_GENETIC_AFFINITY = 40; 

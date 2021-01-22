@@ -6,7 +6,7 @@ abstract class Organism implements Comparable<Organism> {
   private int ID; 
   private float energy; 
   public float shell;
-  private float spikes; 
+  public float spikes; 
   private int generation;
   private float orientationInRadians; 
   private String lastTakenAction = ""; 

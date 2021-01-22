@@ -76,7 +76,9 @@ class Animal extends Organism {
     drawLegs(); 
     fill(super.genome.getColor()); 
     drawFins(); 
+    shellStroke(); 
     drawBody();
+    drawSpikes(); 
     drawHead(); 
   }
   
@@ -89,13 +91,30 @@ class Animal extends Organism {
     }
   }
   
+  private void drawLegs() {
+    if (legs <= 0) return; 
+    stroke(super.genome.getColor());
+    strokeWeight(legs * LEGS_WIDTH_VIEW); 
+    float offBy = this.width() * (0.5 + LEGS_LENGTH_VIEW_X); 
+    Location newLoc = this.location.getLocOffBy(offBy, super.orientationInRadians + PI + QUARTER_PI); 
+    line(location.getX(), location.getY(), newLoc.getX(), newLoc.getY()); 
+    newLoc = this.location.getLocOffBy(offBy, super.orientationInRadians - (PI + QUARTER_PI)); 
+    line(location.getX(), location.getY(), newLoc.getX(), newLoc.getY());
+  }
+  
+  private void drawFins() {
+    if (fins == 0) return; 
+    noStroke(); 
+    float fsize = fins * FINS_VIEW_X + (width() / 2);
+    arc(super.location.getX(), super.location.getY(), fsize, fsize, 
+    super.orientationInRadians + PI * 0.9, super.orientationInRadians + PI * 1.1);
+  }
+  
   private void drawBody() {
-    shellStroke(); 
     circle(super.location.getX(), super.location.getY(), this.width());
   }
   
   private void drawHead() {
-    shellStroke(); 
     Location headLoc = this.location.getLocOffBy(this.width() / 2, super.orientationInRadians);
     // Draw the smaller one last so it can be seen
     if (grazing > jaws) {
@@ -107,23 +126,14 @@ class Animal extends Organism {
     }
   }
   
-  private void drawLegs() {
-    if (legs == 0) return; 
-    stroke(super.genome.getColor());
-    strokeWeight(legs * LEGS_WIDTH_VIEW); 
-    float offBy = this.width() * (0.5 + LEGS_LENGTH_VIEW_X); 
-    Location newLoc = this.location.getLocOffBy(offBy, super.orientationInRadians + PI + QUARTER_PI); 
-    line(location.getX(), location.getY(), newLoc.getX(), newLoc.getY());
-    newLoc = this.location.getLocOffBy(offBy, super.orientationInRadians - (PI + QUARTER_PI)); 
-    line(location.getX(), location.getY(), newLoc.getX(), newLoc.getY());
-  }
-  
-  private void drawFins() {
-    if (fins == 0) return; 
-    noStroke(); 
-    float fsize = fins * FINS_VIEW_X + (width() / 2);
-    arc(super.location.getX(), super.location.getY(), fsize, fsize, 
-    super.orientationInRadians + PI * 0.9, super.orientationInRadians + PI * 1.1);
+  private void drawSpikes() {
+    if (spikes <= 0) return; 
+    float len = super.spikes * SPIKES_SIZE_VIEW; 
+    triangle(
+    location.getX() - len, location.getY(), 
+    location.getX() + len, location.getY(), 
+    location.getX(), location.getY() - len*2
+    ); 
   }
   
   private void drawCarnivoreHead(Location headLoc) {
@@ -169,7 +179,8 @@ class Animal extends Organism {
     if (other.canBePredatedBy(this)) {
       float canPredate = max((this.jaws * JAWS_X) - (other.shell * SHELL_PROTECTION_X), 0); 
       float stomachForMeat = 1 - (STOMACH_SPECIALIZATION * (grazing / (grazing + jaws + 0.01)));
-      toGrowBy += other.removeFromBody(canPredate) * stomachForMeat; 
+      toGrowBy += other.removeFromBody(canPredate * stomachForMeat); 
+      super.energy -= (other.spikes * SPIKES_X);
     }
     if (toGrowBy > 0) {
       setRandomOrientation(); 
@@ -202,6 +213,7 @@ class Animal extends Organism {
     shell = min(shell, bodySize * SHELL_MAX_SIZE_X); 
     legs = min(legs, bodySize * LEGS_MAX_SIZE_X); 
     fins = min(fins, bodySize * FINS_MAX_SIZE_X); 
+    spikes = min(spikes, bodySize * SPIKES_MAX_SIZE_X); 
   }
        
   public String describe() {

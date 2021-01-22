@@ -201,6 +201,23 @@ class GrowShell implements Action {
   Action mutation() { return this; }
 }
 
+class GrowSpikes implements Action {
+  
+  public void act(Animal animal, float amount) {
+    animal.spikes += amount; 
+  }
+  
+  public void act(Plant plant, float amount) {
+    plant.spikes += amount; 
+  }
+  
+  public String toString() { return "grow spikes"; }
+  
+  public String abbrev() { return "P"; }
+  
+  Action mutation() { return this; }
+}
+
 // R: Reproduce
 // B: Body
 // C: Canopy
@@ -211,6 +228,7 @@ class GrowShell implements Action {
 // F: Fins
 // S: Shell
 // M: Marine 
+// P: sPikes
 
 ArrayList<Action> allActions;
 
@@ -218,6 +236,7 @@ void setupAllActionsList() {
   allActions = new ArrayList<Action>();
   allActions.add(new Reproduce(40, 100, 500)); 
   allActions.add(new GrowBody()); 
+  allActions.add(new GrowSpikes()); 
   allActions.add(new GrowCanopy()); 
   allActions.add(new GrowTrunk()); 
   allActions.add(new GrowMarine());
