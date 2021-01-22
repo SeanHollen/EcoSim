@@ -83,7 +83,7 @@ class Animal extends Organism {
   }
   
   private void shellStroke() {
-    if (shell <= 0) {
+    if (shell > 0) {
       stroke(1);
       strokeWeight(shell * SHELL_STROKE);
     } else {
@@ -103,7 +103,7 @@ class Animal extends Organism {
   }
   
   private void drawFins() {
-    if (fins == 0) return; 
+    if (fins <= 0) return; 
     noStroke(); 
     float fsize = fins * FINS_VIEW_X + (width() / 2);
     arc(super.location.getX(), super.location.getY(), fsize, fsize, 
