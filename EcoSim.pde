@@ -13,11 +13,12 @@ void setup() {
 
 void draw() {
   background(mapCrop()); 
+  toRecropThisFrame = false; 
   screenTransform();
   drawOrganisms(); 
   markSelected(); 
   if (!isPaused) {
-    incrementAges(); 
+    incrementAges();
     moveAnimals();
     collisions(); 
     feedPlants();
@@ -29,8 +30,6 @@ void draw() {
   pausedText(); 
   infoOfSelected(); 
 }
-
-boolean isPaused = false; 
 
 // === Board Diminsions === //
 final int BOARD_X = 2000; 
@@ -52,7 +51,7 @@ final float JAWS_SIZE_VIEW = 1;
 final float TRUNK_SIZE_VIEW = 1;
 final float CANOPY_SIZE_VIEW = 1;
 final float LEGS_WIDTH_VIEW = 0.5; 
-final float FINS_VIEW_X = 5; 
+final float FINS_VIEW_X = 2; 
 final float LEGS_LENGTH_VIEW_X = 0.5;
 final float SHELL_STROKE = 0.2; 
 final boolean SHOW_LIGHT_RAYS = false; 
@@ -80,7 +79,7 @@ final float PERCENT_MOUNTAIN = 0.33;
 final float NOLEG_SPEED = 0; 
 final float NOFIN_SPEED = 4; 
 final float LEGS_SPEED = 12; 
-final float FINS_SPEED = 13; 
+final float FINS_SPEED = 12; 
 final int GRACE_PERIOD = 10; //was: 100
 
 // === Energy and Costs === //
@@ -102,7 +101,6 @@ final float GRAZING_X = 1;
 final float CANOPY_MAX_SIZE_X = 2;
 final float GRAZING_MAX_SIZE_X = 0.5;
 final float JAWS_MAX_SIZE_X = 0.75;
-final float EATING_COMB_MAX = 0.75; 
 final float LEGS_MAX_SIZE_X = 0.40;
 final float FINS_MAX_SIZE_X = 0.40;
 final float SHELL_MAX_SIZE_X = 0.2; 
@@ -115,6 +113,9 @@ final float CHANCE_ACQUIRE_NEW_TRAIT = 0.2;
 
 
 // === Scrolling, Clicking, and Zooming functions == // 
+
+boolean isPaused = false; 
+boolean toRecropThisFrame = false; 
 
 void screenTransform() {
   scale(getScale()); 
@@ -155,12 +156,15 @@ boolean mouseOnPause() {
 }
 
 void mouseWheel(MouseEvent e) {
+  toRecropThisFrame = true; 
   float amount = - (float) e.getCount() * SCROLL_SPEED; 
   float xChange = (screenBottomRight.getX() - screenTopLeft.getX()) * amount; 
   float yChange = (screenBottomRight.getY() - screenTopLeft.getY()) * amount; 
   Location cursorLoc = actualLoc(); 
-  float cursorRightSkew = (cursorLoc.getX() - screenTopLeft.getX()) / (screenBottomRight.getX() - screenTopLeft.getX());
-  float cursorBottomSkew = (cursorLoc.getY() - screenTopLeft.getY()) / (screenBottomRight.getY() - screenTopLeft.getY());
+  float cursorRightSkew = (cursorLoc.getX() - screenTopLeft.getX()) 
+  / (screenBottomRight.getX() - screenTopLeft.getX());
+  float cursorBottomSkew = (cursorLoc.getY() - screenTopLeft.getY()) 
+  / (screenBottomRight.getY() - screenTopLeft.getY());
   screenBottomRight.subFromX(xChange * (1 - cursorRightSkew)); 
   screenBottomRight.subFromY(yChange * (1 - cursorBottomSkew));
   screenTopLeft.addToX(xChange * cursorRightSkew); 
@@ -205,6 +209,7 @@ void mousePressed() {
 }
 
 void mouseDragged() {
+  toRecropThisFrame = true; 
   Location actual = actualLoc(); 
   float xDiff = actual.getX() - mousePressedOn.getX();
   float yDiff = actual.getY() - mousePressedOn.getY();

@@ -65,6 +65,19 @@ class Genome {
     return abs(diffr) + abs(diffg) + abs(diffb); 
   }
   
+  public void combineWith(Genome other) {
+    if (other == null) return; 
+    for (int i = 0; i < lifeEvents.size(); i++) {
+      if (i < other.lifeEvents.size() && genomeRandom.nextInt(2) == 1) {
+        lifeEvents.set(i, other.lifeEvents.get(i));
+      } 
+    }
+    float newR = (red(this.theColor) + red(other.theColor)) / 2;
+    float newG = (green(this.theColor) + green(other.theColor)) / 2;
+    float newB = (blue(this.theColor) + blue(other.theColor)) / 2;
+    this.theColor = color(newR, newG, newB);
+  }
+  
   public Genome getMutation() {
     ArrayList<Action> newSequence = new ArrayList<Action>(); 
     for (Action a : lifeEvents) {
@@ -84,7 +97,8 @@ class Genome {
   }
   
   public void swap() {
-    Collections.swap(lifeEvents, genomeRandom.nextInt(lifeEvents.size()), genomeRandom.nextInt(lifeEvents.size()));
+    Collections.swap(lifeEvents, genomeRandom.nextInt(lifeEvents.size()), 
+    genomeRandom.nextInt(lifeEvents.size()));
   }
   
   private void duplicate() {

@@ -2,7 +2,8 @@ class Animal extends Organism {
   
   public float bodySize; 
   public float grazing, jaws, legs, fins, climbing, burrowing, fur, longNeck; // last 4 not yet used yet
-  private HashMap<Integer, Integer> otherOrganismsConsumedTimes;
+  private HashMap<Integer, Integer> otherOrganismsAttackedTimes;
+  private Genome lastBredWith; 
   
   public Animal(Genome genome, Location location, float energy) {
     this(genome, location, energy, 0); 
@@ -11,7 +12,7 @@ class Animal extends Organism {
   private Animal(Genome genome, Location location, float energy, int generation) {
     super(genome, location, energy, generation);
     initializeTraits(); 
-    otherOrganismsConsumedTimes = new HashMap<Integer, Integer>(); 
+    otherOrganismsAttackedTimes = new HashMap<Integer, Integer>(); 
   }
   
   private void initializeTraits() {
@@ -27,6 +28,7 @@ class Animal extends Organism {
   }
   
   protected Organism child(Genome genome, Location loc, float startingEnergy, int generation) {
+    genome.combineWith(lastBredWith);
     return new Animal(genome, loc, startingEnergy, generation);
   }
   
@@ -37,6 +39,9 @@ class Animal extends Organism {
     float portionLegs = legs / (legs + fins); 
     if (Float.isNaN(portionLegs)) return; 
     boolean toEnter = true; 
+    if (immobileOn(currentLocTerrain)) {
+      bodySize--; 
+    } 
     if (newLocTerrain == Terrain.mountain) {
       toEnter = false; 
     } else if (currentLocTerrain == Terrain.land && newLocTerrain == Terrain.water) {
@@ -49,6 +54,12 @@ class Animal extends Organism {
     } else {
       setRandomOrientation(); 
     }
+  }
+  
+  // drowning
+  private boolean immobileOn(Terrain currentTerrain) {
+    if (super.age <= INFANCY_LENGTH) return false; 
+    return currentTerrain == Terrain.mountain || (fins == 0 && currentTerrain == Terrain.water); 
   }
   
   private float getStep(Terrain terrain) {
@@ -110,7 +121,8 @@ class Animal extends Organism {
   private void drawFins() {
     if (fins == 0) return; 
     noStroke(); 
-    arc(super.location.getX(), super.location.getY(), fins * FINS_VIEW_X, fins * FINS_VIEW_X, 
+    float fsize = fins * FINS_VIEW_X + (width() / 2);
+    arc(super.location.getX(), super.location.getY(), fsize, fsize, 
     super.orientationInRadians + PI * 0.9, super.orientationInRadians + PI * 1.1);
   }
   
@@ -137,15 +149,17 @@ class Animal extends Organism {
   }
   
   protected void actOnOrganism(Organism other) {
-    if (!inGracePeriod(other)) {
+    if (sameSpecies(other)) {
+      lastBredWith = other.genome; 
+    } else if (!inGracePeriod(other)) {
       eatOtherIfPossible(other);
-      otherOrganismsConsumedTimes.put(other.ID, frameCount); 
+      otherOrganismsAttackedTimes.put(other.ID, frameCount); 
     } 
   }
   
   private boolean inGracePeriod(Organism other) {
-    return otherOrganismsConsumedTimes.containsKey(other.ID) 
-      && frameCount - otherOrganismsConsumedTimes.get(other.ID) <= GRACE_PERIOD; 
+    return otherOrganismsAttackedTimes.containsKey(other.ID) 
+      && frameCount - otherOrganismsAttackedTimes.get(other.ID) <= GRACE_PERIOD; 
   }
   
   private void eatOtherIfPossible(Organism other) {
@@ -160,6 +174,10 @@ class Animal extends Organism {
       setRandomOrientation(); 
       super.energy += toGrowBy;
     }
+  }
+  
+  protected boolean canBePredatedBy(Animal other) {
+    return this.jaws < other.jaws;
   }
   
   protected float sizeCost() { return bodySize * bodySize * PI * COST_PER_BODY_SIZE; }
@@ -183,21 +201,6 @@ class Animal extends Organism {
     shell = min(shell, bodySize * SHELL_MAX_SIZE_X); 
     legs = min(legs, bodySize * LEGS_MAX_SIZE_X); 
     fins = min(fins, bodySize * FINS_MAX_SIZE_X); 
-    if (grazing + jaws > bodySize * EATING_COMB_MAX) {
-      enforceEatingCombConstraint();
-    }
-  }
-  
-  private void enforceEatingCombConstraint() {
-    float diff = grazing + jaws - (bodySize * EATING_COMB_MAX);
-    float half = diff / 2; 
-    assert (half > 0);
-    grazing = max(0, grazing - half);
-    jaws = max(0, jaws - half);
-  }
-    
-  protected boolean canBePredatedBy(Animal other) {
-    return this.jaws < other.jaws && !other.sameSpecies(this);
   }
        
   public String describe() {

@@ -8,22 +8,6 @@ interface Action {
   Action mutation(); 
 }
 
-// Why would an organism acquire this? I don't know, but if they do it may be a sign that 
-// others are conferring some harm
-class Stall implements Action {
-  
-  public void act(Plant plant, float amount) {}
-  
-  public void act(Animal plant, float amount) {}
-  
-  public String abbrev() { return "N"; }
-  
-  public String toString() { return "stall"; }
-  
-  public Action mutation() { return new Stall(); }
-  
-}
-
 class Reproduce implements Action {
   
   private float childSize; 
@@ -65,7 +49,9 @@ class Reproduce implements Action {
   
   public String toString() { return "reproduce"; }
   
-  public String abbrev() { return "R(" + round(childSize) + "," + round(seedDispersal) + "," + round(minAge) + ")"; }
+  public String abbrev() { 
+    return "R(" + round(childSize) + "," + round(seedDispersal) + "," + round(minAge) + ")"; 
+  }
   
   Action mutation() { 
     float full = MUTATION_RANGE_PORTION;
@@ -215,7 +201,6 @@ class GrowShell implements Action {
   Action mutation() { return this; }
 }
 
-// N: stall 
 // R: Reproduce
 // B: Body
 // C: Canopy
@@ -231,7 +216,6 @@ ArrayList<Action> allActions;
 
 void setupAllActionsList() {
   allActions = new ArrayList<Action>();
-  allActions.add(new Stall()); 
   allActions.add(new Reproduce(40, 100, 500)); 
   allActions.add(new GrowBody()); 
   allActions.add(new GrowCanopy()); 

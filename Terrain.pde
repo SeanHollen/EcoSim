@@ -9,6 +9,7 @@ color terrainColor(Terrain terrain) {
 }
 
 PImage map;
+PImage mapCrop; 
 float terrainRandX = random(100);
 float terrainRandY = random(100);
 
@@ -34,12 +35,15 @@ Terrain terrainAt(Location loc) {
 }
 
 PImage mapCrop() {
+  if (mapCrop != null && !toRecropThisFrame) {
+    return mapCrop; 
+  }
   Location heightAndWidth = screenBottomRight.getLocBySubtracting(screenTopLeft); 
-  PImage toReturn = map.get(
+  mapCrop = map.get(
   (int)screenTopLeft.getX(), 
   (int)screenTopLeft.getY(), 
   (int)heightAndWidth.getX(), 
   (int)heightAndWidth.getY());
-  toReturn.resize(SCREEN_X, SCREEN_Y); 
-  return toReturn; 
+  mapCrop.resize(SCREEN_X, SCREEN_Y); 
+  return mapCrop; 
 }
