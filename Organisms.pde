@@ -80,6 +80,9 @@ void drawOrganisms() {
 
 void infoOfSelected() {
   if (selected != null) {
+    fill(255, 150); 
+    noStroke(); 
+    rect(0, panelTop, 180, BOARD_Y - panelTop); 
     selected.displayInfo();
   } 
 }
@@ -110,7 +113,7 @@ void moveAnimals() {
 }
 
 // uses sweep and prune system 
-void collisionOperations() {
+void collisions() {
   ensureSorted(); 
   for (int i = 0; i < organisms.size(); i++) {
     Organism org = organisms.get(i);

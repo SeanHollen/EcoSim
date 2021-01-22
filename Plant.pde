@@ -3,16 +3,16 @@ class Plant extends Organism {
   public float trunk; 
   public float canopy; 
   public float marine;
-  public boolean isAquatic; 
+  public Terrain terrainOn; 
   
   public Plant(Genome genome, Location location, float energy) {
     super(genome, location, energy, 0); 
     initializeTraits(); 
   }
-  
+
   public Plant(Genome genome, Location location, float energy, int generation) {
     super(genome, location, energy, generation); 
-    isAquatic = isWater(location);
+    terrainOn = terrainAt(location);
     initializeTraits(); 
   }
   
@@ -42,8 +42,8 @@ class Plant extends Organism {
   
   protected void reduceBaseBy(float amount) {
     if (marine > 0) marine -= amount; 
+    else if (trunk > 0) trunk -= amount;
     if (canopy < marine) canopy++; marine--; 
-    if (trunk > 0) trunk -= amount;
     if (canopy < trunk) canopy++; trunk--; 
   }
   
@@ -52,7 +52,7 @@ class Plant extends Organism {
   protected void takeAction(Action action, float toGrowWith) { action.act(this, toGrowWith); }
   
   protected void enforceConstraints() {
-    if (isAquatic) {
+    if (terrainOn == Terrain.water) {
       canopy = min(canopy, marine * CANOPY_MAX_SIZE_X); 
       shell = min(shell, marine * SHELL_MAX_SIZE_X); 
     } else {
@@ -112,7 +112,9 @@ class Plant extends Organism {
     if (super.age < INFANCY_LENGTH) {
       return false; 
     }
-    if (isAquatic) {
+    if (terrainOn == Terrain.mountain) {
+      return true; 
+    } else if (terrainOn == Terrain.water) {
       return marine <= 0; 
     } else {
       return trunk <= 0; 

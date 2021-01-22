@@ -45,7 +45,7 @@ class Genome {
   public String asString() {
     StringBuilder b = new StringBuilder(""); 
     for (Action a : lifeEvents) {
-      b.append(a.toChar()); 
+      b.append(a.abbrev()); 
     }
     return b.toString(); 
   }

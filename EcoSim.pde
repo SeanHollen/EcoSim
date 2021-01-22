@@ -7,19 +7,19 @@ void setup() {
   addStartingPlants(); 
   addStartingHerbavores();
   addStartingCarnivores();
-  generateTerrain();
+  generateMap();
+  println("map created");
 }
 
 void draw() {
-  background(terrainCrop()); 
-  noStroke(); 
+  background(mapCrop()); 
   screenTransform();
   drawOrganisms(); 
   markSelected(); 
   if (!isPaused) {
     incrementAges(); 
     moveAnimals();
-    collisionOperations(); 
+    collisions(); 
     feedPlants();
     homeostasis();
     removeDead(); 
@@ -52,13 +52,14 @@ final float JAWS_SIZE_VIEW = 1;
 final float TRUNK_SIZE_VIEW = 1;
 final float CANOPY_SIZE_VIEW = 1;
 final float LEGS_WIDTH_VIEW = 0.5; 
+final float FINS_VIEW_X = 5; 
 final float LEGS_LENGTH_VIEW_X = 0.5;
 final float SHELL_STROKE = 0.2; 
 final boolean SHOW_LIGHT_RAYS = false; 
 
 // === Info Display === // 
 final float textXOffset = 13; 
-final float panelTop =  SCREEN_Y - 220;
+final float panelTop = SCREEN_Y - 220;
 float crawldown;
 final float panelFont = 15;
 final float INDICATOR_TRIANGLE_SIZE = 16;
@@ -73,10 +74,13 @@ final float START_ANIMAL_ENERGY = 40;
 // === Terrain === //
 final float DELTA = 0.005; 
 final float PERCENT_WATER = 0.4;
+final float PERCENT_MOUNTAIN = 0.33;
 
 // === Movement === //
 final float NOLEG_SPEED = 0; 
+final float NOFIN_SPEED = 4; 
 final float LEGS_SPEED = 12; 
+final float FINS_SPEED = 13; 
 final int GRACE_PERIOD = 10; //was: 100
 
 // === Energy and Costs === //
@@ -100,6 +104,7 @@ final float GRAZING_MAX_SIZE_X = 0.5;
 final float JAWS_MAX_SIZE_X = 0.75;
 final float EATING_COMB_MAX = 0.75; 
 final float LEGS_MAX_SIZE_X = 0.40;
+final float FINS_MAX_SIZE_X = 0.40;
 final float SHELL_MAX_SIZE_X = 0.2; 
 
 // === Genetics === // 
@@ -160,7 +165,7 @@ void mouseWheel(MouseEvent e) {
   screenBottomRight.subFromY(yChange * (1 - cursorBottomSkew));
   screenTopLeft.addToX(xChange * cursorRightSkew); 
   screenTopLeft.addToY(yChange * cursorBottomSkew);
-  screenTopLeft.ensureNotTooCloseTo(screenBottomRight);
+  screenTopLeft.ensureLessThanBy(screenBottomRight, 2);
   ensureScreenInBounds();
 }
 
@@ -214,8 +219,12 @@ void mouseDragged() {
 }
 
 void keyPressed() {
-  if (key == 'r' && selected != null) {
+  // remove/kill selected 
+  if ((key == 'r' || key == 'k') && selected != null) {
     selected.energy = -1000; 
     selected.reduceBaseBy(selected.base());
+    // toggle pause 
+  } else if (key == ' ') {
+    isPaused = !isPaused; 
   }
 }

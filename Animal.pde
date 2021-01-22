@@ -1,13 +1,13 @@
 class Animal extends Organism {
   
   public float bodySize; 
-  public float grazing, jaws, legs, fins, climbing, burrowing, fur, longNeck; // last 5 not yet used yet
+  public float grazing, jaws, legs, fins, climbing, burrowing, fur, longNeck; // last 4 not yet used yet
   private HashMap<Integer, Integer> otherOrganismsConsumedTimes;
   
   public Animal(Genome genome, Location location, float energy) {
     this(genome, location, energy, 0); 
   }
-  
+
   private Animal(Genome genome, Location location, float energy, int generation) {
     super(genome, location, energy, generation);
     initializeTraits(); 
@@ -31,28 +31,45 @@ class Animal extends Organism {
   }
   
   public void move() {
-    Location newLoc = location.getBodyLocOffBy(getStep(), super.orientationInRadians);
-    if (isWater(newLoc)) {
-      setRandomOrientation();
+    Terrain currentLocTerrain = terrainAt(location); 
+    Location newLoc = location.getBodyLocOffBy(getStep(currentLocTerrain), super.orientationInRadians);
+    Terrain newLocTerrain = terrainAt(newLoc);
+    float portionLegs = legs / (legs + fins); 
+    if (Float.isNaN(portionLegs)) return; 
+    boolean toEnter = true; 
+    if (newLocTerrain == Terrain.mountain) {
+      toEnter = false; 
+    } else if (currentLocTerrain == Terrain.land && newLocTerrain == Terrain.water) {
+      toEnter = random(1) < (1 - portionLegs);
+    } else if (currentLocTerrain == Terrain.water && newLocTerrain == Terrain.land) {
+      toEnter = random(1) < portionLegs;
+    } 
+    if (toEnter) {
+      location = newLoc;
     } else {
-      location = newLoc; 
+      setRandomOrientation(); 
     }
-    if (isWater(location)) super.energy--; 
   }
   
-  private float getStep() {
-    return NOLEG_SPEED + (LEGS_SPEED * legs / (bodySize + 0.1)); 
+  private float getStep(Terrain terrain) {
+    if (terrain == Terrain.water) {
+      return NOFIN_SPEED + (FINS_SPEED * fins / (bodySize + 0.1)); 
+    } else if (terrain == Terrain.land) {
+      return NOLEG_SPEED + (LEGS_SPEED * legs / (bodySize + 0.1)); 
+    } else {
+      return 0; 
+    }
   }
   
   public void drawOrganism() {
     drawLegs(); 
-    setStroke(); 
     fill(super.genome.getColor()); 
+    drawFins(); 
     drawBody();
     drawHead(); 
   }
   
-  private void setStroke() {
+  private void shellStroke() {
     if (shell != 0) {
       stroke(1);
       strokeWeight(shell * SHELL_STROKE);
@@ -62,10 +79,12 @@ class Animal extends Organism {
   }
   
   private void drawBody() {
+    shellStroke(); 
     circle(super.location.getX(), super.location.getY(), this.width());
   }
   
   private void drawHead() {
+    shellStroke(); 
     Location headLoc = this.location.getLocOffBy(this.width() / 2, super.orientationInRadians);
     // Draw the smaller one last so it can be seen
     if (grazing > jaws) {
@@ -86,6 +105,13 @@ class Animal extends Organism {
     line(location.getX(), location.getY(), newLoc.getX(), newLoc.getY());
     newLoc = this.location.getLocOffBy(offBy, super.orientationInRadians - (PI + QUARTER_PI)); 
     line(location.getX(), location.getY(), newLoc.getX(), newLoc.getY());
+  }
+  
+  private void drawFins() {
+    if (fins == 0) return; 
+    noStroke(); 
+    arc(super.location.getX(), super.location.getY(), fins * FINS_VIEW_X, fins * FINS_VIEW_X, 
+    super.orientationInRadians + PI * 0.9, super.orientationInRadians + PI * 1.1);
   }
   
   private void drawCarnivoreHead(Location headLoc) {
@@ -124,15 +150,16 @@ class Animal extends Organism {
   
   private void eatOtherIfPossible(Organism other) {
     int toGrowBy = 0;
-      toGrowBy += other.removeFromCanopy(this.grazing * GRAZING_X); 
-      if (other.canBePredatedBy(this)) {
-        float canPredate = max((this.jaws * JAWS_X) - (other.shell * SHELL_PROTECTION_X), 0); 
-        toGrowBy += other.removeFromBody(canPredate); 
-      }
-      if (toGrowBy > 0) {
-        setRandomOrientation(); 
-        super.energy += toGrowBy;
-      }
+    float percentGrazing = grazing / (grazing + jaws + 0.01); // this var essentially "punishes" omnivores...
+    toGrowBy += other.removeFromCanopy(this.grazing * GRAZING_X) * percentGrazing; 
+    if (other.canBePredatedBy(this)) {
+      float canPredate = max((this.jaws * JAWS_X) - (other.shell * SHELL_PROTECTION_X), 0); 
+      toGrowBy += other.removeFromBody(canPredate) * (1 - percentGrazing); 
+    }
+    if (toGrowBy > 0) {
+      setRandomOrientation(); 
+      super.energy += toGrowBy;
+    }
   }
   
   protected float sizeCost() { return bodySize * bodySize * PI * COST_PER_BODY_SIZE; }
@@ -155,6 +182,7 @@ class Animal extends Organism {
     jaws = min(jaws, bodySize * JAWS_MAX_SIZE_X); 
     shell = min(shell, bodySize * SHELL_MAX_SIZE_X); 
     legs = min(legs, bodySize * LEGS_MAX_SIZE_X); 
+    fins = min(fins, bodySize * FINS_MAX_SIZE_X); 
     if (grazing + jaws > bodySize * EATING_COMB_MAX) {
       enforceEatingCombConstraint();
     }
@@ -173,16 +201,11 @@ class Animal extends Organism {
   }
        
   public String describe() {
-    String description = ""; 
-    if (this.fins > this.legs) {
-      description += "fish "; 
-    }
-    if (this.jaws > this.grazing) {
-      description += "carnivore"; 
-    } else {
-      description += "herbavore";
-    }
-    return description; 
+    if (fins >= legs && jaws >= grazing) return "shark"; 
+    if (fins >= legs) return "fish"; 
+    if (grazing == 0) return "carnivore";
+    if (jaws == 0) return "herbavore";
+    return "omnivore";
   }
   
   public boolean isDead() {

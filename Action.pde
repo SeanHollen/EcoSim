@@ -4,7 +4,7 @@
 interface Action {
   void act(Animal organism, float amount);
   void act(Plant organism, float amount);
-  char toChar(); 
+  String abbrev(); 
   Action mutation(); 
 }
 
@@ -16,7 +16,7 @@ class Stall implements Action {
   
   public void act(Animal plant, float amount) {}
   
-  public char toChar() { return 'N'; }
+  public String abbrev() { return "N"; }
   
   public String toString() { return "stall"; }
   
@@ -65,7 +65,7 @@ class Reproduce implements Action {
   
   public String toString() { return "reproduce"; }
   
-  public char toChar() { return 'R'; }
+  public String abbrev() { return "R(" + round(childSize) + "," + round(seedDispersal) + "," + round(minAge) + ")"; }
   
   Action mutation() { 
     float full = MUTATION_RANGE_PORTION;
@@ -88,7 +88,7 @@ class GrowBody implements Action {
  
  public String toString() { return "grow body"; }
  
- public char toChar() { return 'B'; }
+ public String abbrev() { return "B"; }
  
  Action mutation() { return this; }
 }
@@ -103,7 +103,7 @@ class GrowCanopy implements Action {
   
   public String toString() { return "grow canopy"; }
   
-  public char toChar() { return 'C'; }
+  public String abbrev() { return "C"; }
   
   Action mutation() { return this; }
 }
@@ -118,7 +118,7 @@ class GrowTrunk implements Action {
   
   public String toString() { return "grow trunk"; }
   
-  public char toChar() { return 'T'; }
+  public String abbrev() { return "T"; }
   
   Action mutation() { return this; }
 }
@@ -133,7 +133,7 @@ class GrowMarine implements Action {
   
   public String toString() { return "grow marine"; }
   
-  public char toChar() { return 'M'; }
+  public String abbrev() { return "M"; }
   
   Action mutation() { return this; }
 }
@@ -148,7 +148,7 @@ class GrowJaws implements Action {
   
   public String toString() { return "grow jaws"; }
   
-  public char toChar() { return 'J'; }
+  public String abbrev() { return "J"; }
   
   Action mutation() { return this; }
 }
@@ -163,7 +163,7 @@ class GrowGrazing implements Action {
   
   public String toString() { return "grow grazing"; }
   
-  public char toChar() { return 'G'; }
+  public String abbrev() { return "G"; }
   
   Action mutation() { return this; }
 }
@@ -178,7 +178,22 @@ class GrowLegs implements Action {
   
   public String toString() { return "grow legs"; }
   
-  public char toChar() { return 'L'; }
+  public String abbrev() { return "L"; }
+  
+  Action mutation() { return this; }
+}
+
+class GrowFins implements Action {
+  
+  public void act(Animal animal, float amount) {
+    animal.fins += amount; 
+  }
+  
+  public void act(Plant notapplicable, float amount){}
+  
+  public String toString() { return "grow fins"; }
+  
+  public String abbrev() { return "F"; }
   
   Action mutation() { return this; }
 }
@@ -195,11 +210,12 @@ class GrowShell implements Action {
   
   public String toString() { return "grow shell"; }
   
-  public char toChar() { return 'S'; }
+  public String abbrev() { return "S"; }
   
   Action mutation() { return this; }
 }
 
+// N: stall 
 // R: Reproduce
 // B: Body
 // C: Canopy
@@ -207,6 +223,7 @@ class GrowShell implements Action {
 // J: Jaws
 // G: Grazing 
 // L: Legs
+// F: Fins
 // S: Shell
 // M: Marine 
 
@@ -223,5 +240,6 @@ void setupAllActionsList() {
   allActions.add(new GrowJaws()); 
   allActions.add(new GrowGrazing());
   allActions.add(new GrowLegs()); 
+  allActions.add(new GrowFins()); 
   allActions.add(new GrowShell());
 }

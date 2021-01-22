@@ -14,7 +14,7 @@ class Location implements Comparable<Location> {
   }
   
   public Location onLand() {
-    while (isWater(this)) {
+    while (terrainAt(this) != Terrain.land) {
       this.x = random(BOARD_X); 
       this.y = random(BOARD_Y); 
     }
@@ -22,7 +22,7 @@ class Location implements Comparable<Location> {
   }
   
   public Location onWater() {
-    while (!isWater(this)) {
+    while (terrainAt(this) != Terrain.water) {
       this.x = random(BOARD_X); 
       this.y = random(BOARD_Y); 
     }
@@ -112,18 +112,12 @@ class Location implements Comparable<Location> {
     return distance <= minCloseness; 
   }
   
-  public void ensureNotTooCloseTo(Location other) {
-    if (this.x - other.x > 0 && this.x - other.x < 2) {
-      this.x = other.x + 2;
+  public void ensureLessThanBy(Location other, float amt) {
+    if (other.x - this.x < amt) {
+      this.x = other.x - amt; 
     }
-    if (other.x - this.x > 0 && other.x - this.x < 2) {
-      other.x = this.x + 2;
-    }
-    if (this.y - other.y > 0 && this.y - other.y < 2) {
-      this.y = other.y + 2;
-    }
-    if (other.y - this.y > 0 && other.y - this.y < 2) {
-      other.y = this.y + 2;
+    if (other.y - this.y < amt) {
+      this.y = other.y - amt; 
     }
   }
   
