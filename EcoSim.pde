@@ -54,7 +54,7 @@ final float LEGS_WIDTH_VIEW = 0.5;
 final float FINS_VIEW_X = 2; 
 final float LEGS_LENGTH_VIEW_X = 0.5;
 final float SHELL_STROKE = 0.2; 
-final boolean SHOW_LIGHT_RAYS = false; 
+boolean SHOW_LIGHT_RAYS = false; 
 
 // === Info Display === // 
 final float textXOffset = 13; 
@@ -228,12 +228,14 @@ void mouseDragged() {
 }
 
 void keyPressed() {
-  // remove/kill selected 
-  if ((key == 'r' || key == 'k') && selected != null) {
+  // kill selected 
+  if (key == 'k' && selected != null) {
     selected.energy = -1000; 
     selected.reduceBaseBy(selected.base());
     // toggle pause 
   } else if (key == ' ') {
     isPaused = !isPaused; 
+  } else if (key == 'l') {
+    SHOW_LIGHT_RAYS = !SHOW_LIGHT_RAYS;
   }
 }

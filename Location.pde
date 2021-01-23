@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 class Location implements Comparable<Location> {
   
   private float x; 

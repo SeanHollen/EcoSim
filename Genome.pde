@@ -2,7 +2,7 @@ import java.util.Random;
 static Random genomeRandom = new Random(); 
 
 class Genome {
-  
+    
   private ArrayList<Action> lifeEvents; 
   private int eventsIndex; 
   private color theColor; 

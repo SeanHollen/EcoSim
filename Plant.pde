@@ -59,12 +59,14 @@ class Plant extends Organism {
       canopy = min(canopy, trunk * CANOPY_MAX_SIZE_X); 
       shell = min(shell, trunk * SHELL_MAX_SIZE_X); 
     }
+    spikes = min(spikes, trunk * SPIKES_MAX_SIZE_X); 
   }
   
   public void drawOrganism() {
     setShell();
     drawTrunk();
     drawCanopy();
+    drawSpikes(); 
   }
   
   private void setShell() {
@@ -74,14 +76,6 @@ class Plant extends Organism {
     } else {
       noStroke(); 
     }
-  }
-  
-  public void displayInfo() {
-    displayGeneralInfo();
-    float xOff = textXOffset;
-    text("TRUNK " + round(trunk), xOff, crawldown += panelFont);
-    text("MARINE " + round(marine), xOff, crawldown += panelFont);
-    text("CANOPY " + round(canopy), xOff, crawldown += panelFont);
   }
   
   private void drawTrunk() {
@@ -94,8 +88,26 @@ class Plant extends Organism {
     circle(super.location.getX(), super.location.getY(), (this.canopy * CANOPY_SIZE_VIEW));
   }
   
-  protected int width() {
-    return (int) (canopy * BODY_SIZE_VIEW);
+  private void drawSpikes() {
+    if (spikes <= 0) return; 
+    float len = super.spikes * SPIKES_SIZE_VIEW; 
+    triangle(
+    location.getX() - len, location.getY(), 
+    location.getX() + len, location.getY(), 
+    location.getX(), location.getY() - len*2
+    ); 
+  }
+  
+  public void displayInfo() {
+    displayGeneralInfo();
+    float xOff = textXOffset;
+    text("TRUNK " + round(trunk), xOff, crawldown += panelFont);
+    text("MARINE " + round(marine), xOff, crawldown += panelFont);
+    text("CANOPY " + round(canopy), xOff, crawldown += panelFont);
+  }
+  
+  protected float width() {
+    return canopy * BODY_SIZE_VIEW;
   }
     
   protected float removeFromCanopy(float toRemove) { 

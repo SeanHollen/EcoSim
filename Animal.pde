@@ -154,8 +154,8 @@ class Animal extends Organism {
     text("LEGS " + round(legs), textXOffset, crawldown += panelFont);
   }
   
-  protected int width() {
-    return (int) (this.bodySize * BODY_SIZE_VIEW); 
+  protected float width() {
+    return this.bodySize * BODY_SIZE_VIEW; 
   }
   
   protected void actOnOrganism(Organism other) {

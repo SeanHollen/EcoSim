@@ -152,7 +152,7 @@ abstract class Organism implements Comparable<Organism> {
     
   public abstract void drawOrganism();
   
-  protected abstract int width();
+  protected abstract float width();
   
   protected void actOnOrganism(Organism other) {}
   

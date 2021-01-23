@@ -152,6 +152,7 @@ ArrayList<Location> makeLightRays() {
     Location newRay = new Location();
     lightRays.add(newRay); 
     if (SHOW_LIGHT_RAYS) {
+      noStroke(); 
       drawRay(newRay);
     }
   }
