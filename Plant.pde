@@ -2,7 +2,7 @@ class Plant extends Organism {
   
   public float trunk; 
   public float canopy; 
-  public float marine;
+  private float marine;
   public Terrain terrainOn; 
   
   public Plant(Genome genome, Location location, float energy) {
@@ -35,16 +35,18 @@ class Plant extends Organism {
   }
   
   protected float sizeCost() {
-    float marineCost = marine * marine * marine * PI * COST_PER_TRUNK; 
-    float trunkCost = trunk * trunk * trunk * PI * COST_PER_TRUNK;
-    return max(marineCost, trunkCost);
+    if (marine > trunk) {
+      return marine * marine * marine * PI * COST_PER_CUBED_TRUNK; 
+    } else {
+      return trunk * trunk * trunk * PI * COST_PER_CUBED_TRUNK;
+    }
   } 
   
   protected void reduceBaseBy(float amount) {
     if (marine > 0) marine -= amount; 
     else if (trunk > 0) trunk -= amount;
-    if (canopy < marine) canopy++; marine--; 
-    if (canopy < trunk) canopy++; trunk--; 
+    if (canopy < marine) { canopy++; marine--; }
+    if (canopy < trunk) { canopy++; trunk--; }
   }
   
   protected float base() { return max(this.trunk, this.marine); }

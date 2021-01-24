@@ -105,7 +105,7 @@ class Animal extends Organism {
   private void drawFins() {
     if (fins <= 0) return; 
     noStroke(); 
-    float fsize = fins * FINS_VIEW_X + (width() / 2);
+    float fsize = fins * FINS_VIEW_X + width();
     arc(super.location.getX(), super.location.getY(), fsize, fsize, 
     super.orientationInRadians + PI * 0.9, super.orientationInRadians + PI * 1.1);
   }
@@ -192,7 +192,10 @@ class Animal extends Organism {
     return this.jaws < other.jaws;
   }
   
-  protected float sizeCost() { return bodySize * bodySize * PI * COST_PER_BODY_SIZE; }
+  protected float sizeCost() { 
+    return bodySize * bodySize * PI * COST_PER_SQUARED_BODY_SIZE
+    + bodySize * bodySize * PI * COST_PER_CUBED_BODY_SIZE; 
+  }
   
   protected void reduceBaseBy(float amount) { removeFromBody(amount); }
   

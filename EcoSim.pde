@@ -58,7 +58,7 @@ boolean SHOW_LIGHT_RAYS = false;
 
 // === Info Display === // 
 final float textXOffset = 13; 
-final float panelTop = SCREEN_Y - 220;
+final float panelTop = SCREEN_Y - 240;
 float crawldown;
 final float panelFont = 15;
 final float INDICATOR_TRIANGLE_SIZE = 16;
@@ -80,11 +80,12 @@ final float NOLEG_SPEED = 0;
 final float NOFIN_SPEED = 4; 
 final float LEGS_SPEED = 12; 
 final float FINS_SPEED = 12; 
-final int GRACE_PERIOD = 10; //was: 100
+final int GRACE_PERIOD = 10; 
 
 // === Energy and Costs === //
-final float COST_PER_BODY_SIZE = 0.00003; 
-final float COST_PER_TRUNK = 0.00003; 
+final float COST_PER_SQUARED_BODY_SIZE = 0.00003; 
+final float COST_PER_CUBED_BODY_SIZE = 0.000001; 
+final float COST_PER_CUBED_TRUNK = 0.00005; // was: 0..3
 final float AGE_COST_PER1K_ONGOING = 0.0006; 
 final float GROWTH_SPEED = 0.5;
 final float ENERGY_PER_RAY = 20; 
@@ -149,6 +150,7 @@ Location actualLoc() {
 
 void pausedText() {
   textSize(16);
+  //text(millis(), textXOffset, 80); 
   String text; 
   if (mouseOnPause()) fill(171, 171, 171); else fill(0);
   if (isPaused) text = "paused"; else text = "pause"; 
@@ -228,11 +230,13 @@ void mouseDragged() {
 }
 
 void keyPressed() {
-  // kill selected 
-  if (key == 'k' && selected != null) {
+  if (key == '-' && selected != null) {
     selected.energy = -1000; 
     selected.reduceBaseBy(selected.base());
-    // toggle pause 
+  } else if ((key == '+' || key == '=') && selected != null) {
+    selected.energy += 10000; 
+    selected.reduceBaseBy(-100);
+    if (selected instanceof Plant) ((Plant) selected).canopy += 200; 
   } else if (key == ' ') {
     isPaused = !isPaused; 
   } else if (key == 'l') {

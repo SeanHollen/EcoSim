@@ -127,7 +127,8 @@ abstract class Organism implements Comparable<Organism> {
     fill(0);
     strokeWeight(3);
     text("TYPE " + describe(), xOff, crawldown += panelFont);
-    text("GENOME " + genome.asString(), xOff, crawldown += panelFont);
+    text("GENOME:", xOff, crawldown += panelFont);
+    text(genome.asString(), xOff, crawldown += panelFont);
     text("LAST ACT " + lastTakenAction, xOff, crawldown += panelFont);
     text("COLOR " + genome.writeColors(), xOff, crawldown += panelFont);
     text("ID " + ID, xOff, crawldown += panelFont);

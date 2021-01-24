@@ -71,6 +71,7 @@ void selectOrganism(Location clicked) {
 }
 
 void drawOrganisms() {
+  if (keyPressed && key == 'f') return; 
   Collections.sort(organisms, new SortByHeight()); 
   areOrganismsSorted = false; // they are not sorted by X
   for (Organism organism : organisms) {
