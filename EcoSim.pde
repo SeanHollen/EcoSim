@@ -73,7 +73,7 @@ final float START_ANIMAL_ENERGY = 40;
 // === Terrain === //
 final float DELTA = 0.005; 
 final float PERCENT_WATER = 0.4;
-final float PERCENT_MOUNTAIN = 0.33;
+final float PERCENT_MOUNTAIN = 0.33; 
 
 // === Movement === //
 final float NOLEG_SPEED = 0; 
@@ -83,10 +83,12 @@ final float FINS_SPEED = 12;
 final int GRACE_PERIOD = 10; 
 
 // === Energy and Costs === //
-final float COST_PER_SQUARED_BODY_SIZE = 0.00003; 
-final float COST_PER_CUBED_BODY_SIZE = 0.000001; 
-final float COST_PER_CUBED_TRUNK = 0.00005; // was: 0..3
-final float AGE_COST_PER1K_ONGOING = 0.0006; 
+final float scalar = 0.00001;
+final float COST_PER_SQUARED_BODY_SIZE = scalar * 9; 
+final float COST_PER_CUBED_BODY_SIZE = scalar * 0.3; 
+final float COST_PER_CUBED_TRUNK = scalar * 15; 
+final float COST_PER_4_TRUNK = scalar * 0.3; 
+final float AGE_COST_PER1K_ONGOING = scalar * 60; 
 final float GROWTH_SPEED = 0.5;
 final float ENERGY_PER_RAY = 20; 
 final float RAYS_PER_10K_PIXELS = 1; 
@@ -94,21 +96,21 @@ final float INFANCY_LENGTH = 20;
 final float SEED_DISPERSAL_COST = 0; 
 
 // === Trait Benefits === //
-final float SHELL_PROTECTION_X = 1; 
+final float SHELL_PROTECTION_X = 0.5; 
 final float SPIKES_X = 1; 
-final float JAWS_X = 1; 
+final float JAWS_X = 0.7; 
 final float GRAZING_X = 1; 
-// stomach specialization exists to essentially make it harder to be an omnivore
+// this exists to essentially make it harder to be an omnivore:
 final float STOMACH_SPECIALIZATION = 0.75; 
 
 // === Restrictions === //
 final float CANOPY_MAX_SIZE_X = 2;
 final float GRAZING_MAX_SIZE_X = 0.5;
 final float JAWS_MAX_SIZE_X = 0.75;
-final float LEGS_MAX_SIZE_X = 0.40;
-final float FINS_MAX_SIZE_X = 0.40;
-final float SHELL_MAX_SIZE_X = 0.3; 
-final float SPIKES_MAX_SIZE_X = 0.3; 
+final float LEGS_MAX_SIZE_X = 0.6;
+final float FINS_MAX_SIZE_X = 0.6;
+final float SHELL_MAX_SIZE_X = 1; 
+final float SPIKES_MAX_SIZE_X = 1; 
 
 // === Genetics === // 
 final int START_GENETIC_AFFINITY = 40; 

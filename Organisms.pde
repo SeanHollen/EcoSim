@@ -31,7 +31,6 @@ void addStartingHerbavores() {
     actions.add(new GrowBody()); 
   }
   actions.add(new GrowGrazing()); 
-  actions.add(new GrowShell()); 
   actions.add(new Reproduce(60, 10, 500)); 
   actions.add(new GrowLegs()); 
   for (int i = 0; i < 20; i++) {
@@ -177,7 +176,7 @@ HashMap<Location, Plant> plantsToGetLight(ArrayList<Location> lightRays) {
         } else if (!results.containsKey(ray)) {
           results.put(ray, (Plant) org); 
         } else if (org.tallerPlantThan(results.get(ray))) {
-          results.put(ray, (Plant) org); // error here 
+          results.put(ray, (Plant) org); 
         }
       } else if (org.bodyEastOfXPoint(ray.getX())) {
         break; 

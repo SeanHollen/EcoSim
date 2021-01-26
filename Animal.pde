@@ -193,8 +193,8 @@ class Animal extends Organism {
   }
   
   protected float sizeCost() { 
-    return bodySize * bodySize * PI * COST_PER_SQUARED_BODY_SIZE
-    + bodySize * bodySize * PI * COST_PER_CUBED_BODY_SIZE; 
+    return bodySize * bodySize * COST_PER_SQUARED_BODY_SIZE
+    + bodySize * bodySize * COST_PER_CUBED_BODY_SIZE; 
   }
   
   protected void reduceBaseBy(float amount) { removeFromBody(amount); }
@@ -206,6 +206,8 @@ class Animal extends Organism {
   protected float removeFromBody(float toRemove) {
     if (toRemove == 0) return 0; 
     toRemove = min(toRemove, bodySize); 
+    float fraction = toRemove / bodySize; 
+    reduceTraitsByFraction(fraction);
     bodySize -= toRemove; 
     return toRemove; 
   }
@@ -213,10 +215,19 @@ class Animal extends Organism {
   protected void enforceConstraints() {
     grazing = min(grazing, bodySize * GRAZING_MAX_SIZE_X); 
     jaws = min(jaws, bodySize * JAWS_MAX_SIZE_X); 
-    shell = min(shell, bodySize * SHELL_MAX_SIZE_X); 
     legs = min(legs, bodySize * LEGS_MAX_SIZE_X); 
     fins = min(fins, bodySize * FINS_MAX_SIZE_X); 
+    shell = min(shell, bodySize * SHELL_MAX_SIZE_X); 
     spikes = min(spikes, bodySize * SPIKES_MAX_SIZE_X); 
+  }
+  
+  private void reduceTraitsByFraction(float fraction) {
+    grazing -= (grazing * fraction);
+    jaws -= (jaws * fraction);
+    shell -= (shell * fraction); 
+    legs -= (legs * fraction);
+    fins -= (fins * fraction);
+    spikes -= (spikes * fraction); 
   }
        
   public String describe() {

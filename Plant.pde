@@ -36,9 +36,11 @@ class Plant extends Organism {
   
   protected float sizeCost() {
     if (marine > trunk) {
-      return marine * marine * marine * PI * COST_PER_CUBED_TRUNK; 
+      return marine * marine * marine * COST_PER_CUBED_TRUNK
+      + marine * marine * marine * marine * COST_PER_4_TRUNK; 
     } else {
-      return trunk * trunk * trunk * PI * COST_PER_CUBED_TRUNK;
+      return trunk * trunk * trunk * COST_PER_CUBED_TRUNK
+      + trunk * trunk * trunk * trunk * COST_PER_4_TRUNK;
     }
   } 
   
