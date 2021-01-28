@@ -64,8 +64,8 @@ class Location implements Comparable<Location> {
   }
   
   public void moveBy(float step, float radians) {
-    x += step * Math.cos(radians);
-    y += step * Math.sin(radians);
+    x += step * cos(radians);
+    y += step * sin(radians);
     rollOver(); 
   }
   

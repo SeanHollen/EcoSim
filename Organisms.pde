@@ -33,8 +33,15 @@ void addStartingHerbavores() {
   actions.add(new GrowGrazing()); 
   actions.add(new Reproduce(60, 10, 500)); 
   actions.add(new GrowLegs()); 
+  ArrayList<Action> actionsWithShell = new ArrayList<Action>(actions);
+  actionsWithShell.add(new GrowShell()); 
   for (int i = 0; i < 20; i++) {
-    Genome genome = new Genome(actions, color(219, 197, 156));
+    Genome genome;
+    if (i % 2 == 0) {
+      genome = new Genome(actions, color(219, 197, 156));
+    } else {
+      genome = new Genome(actionsWithShell, color(66, 245, 114)); 
+    }
     Animal newAnimal = new Animal(genome, new Location().onLand(), START_ANIMAL_ENERGY);
     organisms.add(newAnimal);
   }
