@@ -40,7 +40,7 @@ void addStartingHerbavores() {
     if (i % 2 == 0) {
       genome = new Genome(actions, color(219, 197, 156));
     } else {
-      genome = new Genome(actionsWithShell, color(66, 245, 114)); 
+      genome = new Genome(actionsWithShell, color(219, 197, 156)); 
     }
     Animal newAnimal = new Animal(genome, new Location().onLand(), START_ANIMAL_ENERGY);
     organisms.add(newAnimal);
